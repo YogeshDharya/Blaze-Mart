@@ -6,7 +6,10 @@
 
 package com.crio.qeats.dto;
 
-// TODO: CRIO_TASK_MODULE_SERIALIZATION - Implement Restaurant class.
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
+
+// COMPLETED: CRIO_TASK_MODULE_SERIALIZATION - Implement Restaurant class.
 // Complete the class such that it produces the following JSON during serialization.
 // {
 //  "restaurantId": "10",
@@ -24,5 +27,31 @@ package com.crio.qeats.dto;
 // }
 public class Restaurant {
 
+  @JsonProperty(value = "restaurantId")
+  String restaurantId;
+
+  @JsonProperty(value = "name")
+  String name;
+
+  @JsonProperty(value = "city")
+  String city;
+
+  @JsonProperty(value = "imageUrl")
+  String imageUrl;
+
+  @JsonProperty(value = "latitude")
+  double latitude;
+
+  @JsonProperty(value = "longitude")
+  double longitude;
+
+  @JsonProperty(value = "opensAt")
+  String opensAt;
+
+  @JsonProperty(value = "closesAt")
+  String closesAt;
+
+  @JsonProperty(value = "attributes")
+  ArrayList<String> attributes;
 }
 

@@ -53,18 +53,9 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
     log.info("Restaurants received: {}", restaurantEntities.size());
     for (RestaurantEntity restaurantEntity : restaurantEntities) {
       if (GeoUtils.findDistanceInKm(latitude, longitude, restaurantEntity.getLatitude(),
-          restaurantEntity.getLongitude()) <= servingRadiusInKms) {
-        restaurants.add(new Restaurant(
-            restaurantEntity.getRestaurantId(),
-            restaurantEntity.getName(),
-            restaurantEntity.getCity(),
-            restaurantEntity.getImageUrl(),
-            restaurantEntity.getLatitude(),
-            restaurantEntity.getLongitude(),
-            restaurantEntity.getOpensAt(),
-            restaurantEntity.getClosesAt(),
-            restaurantEntity.getAttributes()
-        ));
+          restaurantEntity.getLongitude()) <= servingRadiusInKms
+          && isOpenNow(currentTime, restaurantEntity)) {
+        restaurants.add(modelMapperProvider.get().map(restaurantEntity, Restaurant.class));
       }
     }
 

@@ -64,7 +64,7 @@ public class RestaurantRepositoryServiceTest {
     assertNotNull(restaurantRepositoryService);
 
     List<Restaurant> allRestaurantsCloseBy = restaurantRepositoryService
-        .findAllRestaurantsCloseBy(20.0, 30.0, LocalTime.of(18, 01), 3.0);
+        .findAllRestaurantsCloseBy(20.0, 30.0, LocalTime.of(18, 1), 3.0);
 
     ModelMapper modelMapper = modelMapperProvider.get();
     assertEquals(2, allRestaurantsCloseBy.size());
@@ -78,7 +78,7 @@ public class RestaurantRepositoryServiceTest {
     assertNotNull(restaurantRepositoryService);
 
     List<Restaurant> allRestaurantsCloseBy = restaurantRepositoryService
-        .findAllRestaurantsCloseBy(20.9, 30.0, LocalTime.of(18, 00), 3.0);
+        .findAllRestaurantsCloseBy(20.9, 30.0, LocalTime.of(18, 0), 3.0);
 
     ModelMapper modelMapper = modelMapperProvider.get();
     assertEquals(0, allRestaurantsCloseBy.size());

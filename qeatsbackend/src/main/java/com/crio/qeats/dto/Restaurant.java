@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -62,7 +63,7 @@ public class Restaurant {
   String closesAt;
 
   @JsonProperty(value = "attributes")
-  ArrayList<String> attributes;
+  List<String> attributes = new ArrayList<>();
 
   public boolean isOpen(LocalTime now) {
     if (this.opensAt == null || this.closesAt == null) {

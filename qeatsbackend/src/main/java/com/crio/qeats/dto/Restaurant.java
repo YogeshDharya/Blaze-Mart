@@ -6,8 +6,14 @@
 
 package com.crio.qeats.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 // COMPLETED: CRIO_TASK_MODULE_SERIALIZATION - Implement Restaurant class.
 // Complete the class such that it produces the following JSON during serialization.
@@ -25,6 +31,10 @@ import java.util.ArrayList;
 //    "South Indian"
 //  ]
 // }
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Restaurant {
 
   @JsonProperty(value = "restaurantId")
@@ -53,5 +63,15 @@ public class Restaurant {
 
   @JsonProperty(value = "attributes")
   ArrayList<String> attributes;
+
+  public boolean isOpen(LocalTime now) {
+    if (this.opensAt == null || this.closesAt == null) {
+      return true;
+    }
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+    LocalTime opens = LocalTime.parse(opensAt, formatter);
+    LocalTime closes = LocalTime.parse(closesAt, formatter);
+    return now.isAfter(opens) && now.isBefore(closes);
+  }
 }
 

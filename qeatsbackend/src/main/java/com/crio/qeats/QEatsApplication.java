@@ -8,6 +8,7 @@ package com.crio.qeats;
 
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
@@ -17,7 +18,11 @@ import org.springframework.context.annotation.Scope;
 public class QEatsApplication {
 
   public static void main(String[] args) {
-    // You don't need to run main for serialization module.
+    SpringApplication.run(QEatsApplication.class, args);
+
+    // TIP:MODULE_RESTAPI: If your server starts successfully,
+    // you can find the following message in the logs.
+    log.info("Congrats! Your QEatsApplication server has started");
   }
 
   /**

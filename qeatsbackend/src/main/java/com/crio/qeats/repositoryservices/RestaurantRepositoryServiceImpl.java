@@ -21,8 +21,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 @Service
-@Primary
 @Slf4j
+@Primary
 public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryService {
 
   @Autowired
@@ -58,8 +58,6 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
         restaurants.add(modelMapperProvider.get().map(restaurantEntity, Restaurant.class));
       }
     }
-
     return restaurants;
   }
-
 }

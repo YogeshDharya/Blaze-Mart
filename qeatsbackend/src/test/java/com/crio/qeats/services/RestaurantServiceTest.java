@@ -33,7 +33,7 @@ import org.mockito.quality.Strictness;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-// COMPLETED: CRIO_TASK_MODULE_RESTAURANTAPI - Pass all the RestaurantService test cases.
+// TODO: CRIO_TASK_MODULE_RESTAURANTAPI - Pass all the RestaurantService test cases.
 // Make modifications to the tests if necessary.
 // Test RestaurantService Api by mocking RestaurantRepositoryService.
 @SpringBootTest(classes = {QEatsApplication.class})
@@ -46,8 +46,6 @@ class RestaurantServiceTest {
   @MockBean
   private RestaurantRepositoryService restaurantRepositoryServiceMock;
   private ObjectMapper objectMapper;
-
-  // find restaurant that opens shortly
 
   @BeforeEach
   void setup() {
@@ -87,11 +85,6 @@ class RestaurantServiceTest {
   @Test
   void peakHourServingRadiusOf3KmsAt2Pm() throws IOException {
     assertEquals(getServingRadius(loadRestaurantsDuringPeakHours(), LocalTime.of(14, 0)), "3.0");
-  }
-
-  @Test
-  void normalHourServingRadiusOf5KmsAt4Pm() throws IOException {
-    assertEquals(getServingRadius(loadRestaurantsDuringPeakHours(), LocalTime.of(16, 0)), "5.0");
   }
 
   @Test

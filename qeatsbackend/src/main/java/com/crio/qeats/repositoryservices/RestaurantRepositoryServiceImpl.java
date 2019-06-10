@@ -7,6 +7,7 @@
 package com.crio.qeats.repositoryservices;
 
 import com.crio.qeats.dto.Restaurant;
+import com.crio.qeats.globals.GlobalConstants;
 import com.crio.qeats.models.RestaurantEntity;
 import com.crio.qeats.repositories.RestaurantRepository;
 import com.crio.qeats.utils.GeoUtils;
@@ -38,26 +39,46 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
     return time.isAfter(openingTime) && time.isBefore(closingTime);
   }
 
-  // COMPLETED: CRIO_TASK_MODULE_NOSQL - Implement findAllRestaurantsCloseby.
+  // TODO: CRIO_TASK_MODULE_REDIS - Add cache support.
   // Check RestaurantRepositoryService.java file for the interface contract.
   public List<Restaurant> findAllRestaurantsCloseBy(Double latitude,
       Double longitude, LocalTime currentTime, Double servingRadiusInKms) {
-    return findAllRestaurantsCloseFromDb(latitude, longitude, currentTime, servingRadiusInKms);
+    if (GlobalConstants.isCacheAvailable()) {
+      return findAllRestaurantsCloseByFromCache(latitude, longitude, currentTime,
+          servingRadiusInKms);
+    } else {
+      return findAllRestaurantsCloseFromDb(latitude, longitude, currentTime, servingRadiusInKms);
+    }
   }
 
   private List<Restaurant> findAllRestaurantsCloseFromDb(Double latitude, Double longitude,
-      LocalTime currentTime,
-      Double servingRadiusInKms) {
+      LocalTime currentTime, Double servingRadiusInKms) {
     List<RestaurantEntity> restaurantEntities = restaurantRepository.findAll();
     List<Restaurant> restaurants = new ArrayList<>();
     log.info("Restaurants received: {}", restaurantEntities.size());
     for (RestaurantEntity restaurantEntity : restaurantEntities) {
       if (GeoUtils.findDistanceInKm(latitude, longitude, restaurantEntity.getLatitude(),
-          restaurantEntity.getLongitude()) <= servingRadiusInKms
-          && isOpenNow(currentTime, restaurantEntity)) {
+              restaurantEntity.getLongitude()) <= servingRadiusInKms
+              && isOpenNow(currentTime, restaurantEntity)) {
         restaurants.add(modelMapperProvider.get().map(restaurantEntity, Restaurant.class));
       }
     }
     return restaurants;
+  }
+
+
+  // TODO: CRIO_TASK_MODULE_REDIS - Implement caching.
+  /**
+   * Implement caching for restaurants closeby.
+   * Whenever the entry is not there in the cache, you will have to populate it from DB.
+   * If the entry is already available in the cache, then return it from cache to save DB lookup.
+   * The cache entries should expire in GlobalConstants.REDIS_ENTRY_EXPIRY_IN_SECONDS.
+   * Make sure you use something like a GeoHash with a slightly lower precision,
+   * so that for lat/long that are slightly close, the function returns the same set of restaurants.
+   */
+  private List<Restaurant> findAllRestaurantsCloseByFromCache(
+      Double latitude, Double longitude, LocalTime currentTime, Double servingRadiusInKms) {
+
+     return null;
   }
 }

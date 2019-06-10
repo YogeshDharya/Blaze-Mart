@@ -5,6 +5,7 @@
 package com.crio.qeats.utils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 
@@ -13,10 +14,14 @@ import javax.validation.constraints.NotNull;
  */
 public class GeoLocation implements Serializable {
 
-  @NotNull private Double latitude;
-  @NotNull private Double longitude;
+  @NotNull
+  private Double latitude;
+  @NotNull
+  private Double longitude;
 
-  public GeoLocation() {}
+  public GeoLocation() {
+
+  }
 
   public GeoLocation(Double latitude, Double longitude) {
     this.latitude = latitude;

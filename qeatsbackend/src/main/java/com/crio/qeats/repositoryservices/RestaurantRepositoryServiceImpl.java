@@ -21,6 +21,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Provider;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -33,6 +34,10 @@ import redis.clients.jedis.Jedis;
 @Slf4j
 @Primary
 public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryService {
+  @PostConstruct
+  private void init() {
+    GlobalConstants.initCache();
+  }
 
   @Autowired
   private RestaurantRepository restaurantRepository;
@@ -51,7 +56,7 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
   // COMPLETED: CRIO_TASK_MODULE_REDIS - Add cache support.
   // Check RestaurantRepositoryService.java file for the interface contract.
   public List<Restaurant> findAllRestaurantsCloseBy(Double latitude,
-               Double longitude, LocalTime currentTime, Double servingRadiusInKms) {
+      Double longitude, LocalTime currentTime, Double servingRadiusInKms) {
     if (GlobalConstants.isCacheAvailable()) {
       return findAllRestaurantsCloseByFromCache(latitude, longitude, currentTime,
           servingRadiusInKms);
@@ -61,7 +66,7 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
   }
 
   private List<Restaurant> findAllRestaurantsCloseFromDb(Double latitude, Double longitude,
-               LocalTime currentTime, Double servingRadiusInKms) {
+       LocalTime currentTime, Double servingRadiusInKms) {
     List<RestaurantEntity> restaurantEntities = restaurantRepository.findAll();
     List<Restaurant> restaurants = new ArrayList<>();
     log.info("Restaurants received: {}", restaurantEntities.size());

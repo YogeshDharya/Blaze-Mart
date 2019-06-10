@@ -49,11 +49,6 @@ class RestaurantRepositoryServiceCacheTest {
   @MockBean
   private RestaurantRepository mockRestaurantRepository;
 
-  @BeforeEach
-  void setup() {
-    GlobalConstants.initCache();
-  }
-
   @AfterEach
   void teardown() {
     GlobalConstants.destroyCache();

@@ -52,7 +52,7 @@ public class GlobalConstants {
    */
   public static void destroyCache() {
     try {
-      jedisPool.getResource().flushDB();
+      jedisPool.getResource().flushAll();
     } catch (JedisConnectionException e) {
       System.out.println("Error");
     }

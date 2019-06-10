@@ -33,7 +33,7 @@ import org.mockito.quality.Strictness;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-// TODO: CRIO_TASK_MODULE_RESTAURANTAPI - Pass all the RestaurantService test cases.
+// COMPLETED: CRIO_TASK_MODULE_RESTAURANTAPI - Pass all the RestaurantService test cases.
 // Make modifications to the tests if necessary.
 // Test RestaurantService Api by mocking RestaurantRepositoryService.
 @SpringBootTest(classes = {QEatsApplication.class})

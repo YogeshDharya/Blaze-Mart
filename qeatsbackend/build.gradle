@@ -44,7 +44,7 @@ dependencies {
     implementation "io.springfox:springfox-swagger2:$rootProject.ext.swaggerVersion"
     implementation "io.springfox:springfox-swagger-ui:$rootProject.ext.swaggerVersion"
 
-    // TODO: CRIO_TASK_MODULE_REDIS
+    // COMPLETED: CRIO_TASK_MODULE_REDIS
     // Objective:
     // Add required libraries for:
     // 1. Jedis - A Java based Redis client (https://github.com/xetorthio/jedis)

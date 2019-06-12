@@ -29,6 +29,7 @@ public class RestaurantServiceImpl implements RestaurantService {
   private RestaurantRepositoryService restaurantRepositoryService;
 
 
+  // TODO: CRIO_TASK_MODULE_RESTAURANTSAPI - Implement findAllRestaurantsCloseby.
   // COMPLETED: CRIO_TASK_MODULE_RESTAURANTSAPI - Implement findAllRestaurantsCloseby.
   // Check RestaurantService.java file for the interface contract.
   @Override
@@ -106,5 +107,15 @@ public class RestaurantServiceImpl implements RestaurantService {
         || currentTime.equals(s1) || currentTime.equals(e1)
         || currentTime.equals(s2) || currentTime.equals(e2)
         || currentTime.equals(s3) || currentTime.equals(e3);
+  }
+
+  // TODO: CRIO_TASK_MODULE_MULTITHREADING: Implement multi-threaded version of RestaurantSearch.
+  // Implement variant of findRestaurantsBySearchQuery which is at least 1.5x time faster than
+  // findRestaurantsBySearchQuery.
+  @Override
+  public GetRestaurantsResponse findRestaurantsBySearchQueryMt(
+      GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime) {
+
+    return null;
   }
 }

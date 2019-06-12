@@ -9,9 +9,7 @@ package com.crio.qeats.controller;
 import com.crio.qeats.exchanges.GetRestaurantsRequest;
 import com.crio.qeats.exchanges.GetRestaurantsResponse;
 import com.crio.qeats.services.RestaurantService;
-
 import java.time.LocalTime;
-
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +28,8 @@ public class RestaurantController {
   @Autowired
   private RestaurantService restaurantService;
 
-  // TODO: CRIO_TASK_MODULE_RESTAURANTSEARCH - Implement the GetRestaurants API as per spec.
+  // TODO: CRIO_TASK_MODULE_MULTITHREADING - Improve the performance of this GetRestaurants API
+  //  and keep the functionality same.
   // Get the list of open restaurants near the specified latitude/longitude & matching searchFor.
   // API URI: /qeats/v1/restaurants?latitude=21.93&longitude=23.0&searchFor=tamil
   // Method: GET

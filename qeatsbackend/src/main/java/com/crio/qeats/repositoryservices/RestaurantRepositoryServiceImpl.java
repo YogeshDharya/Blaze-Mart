@@ -6,6 +6,8 @@
 
 package com.crio.qeats.repositoryservices;
 
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
+
 import ch.hsr.geohash.GeoHash;
 import com.crio.qeats.dto.Restaurant;
 import com.crio.qeats.globals.GlobalConstants;
@@ -26,25 +28,36 @@ import javax.inject.Provider;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.LookupOperation;
+import org.springframework.data.mongodb.core.aggregation.MatchOperation;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
 @Service
 @Slf4j
-@Primary
 public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryService {
+
+  @Autowired
+  private RestaurantRepository restaurantRepository;
+
+  @Autowired
+  private ObjectMapper objectMapper;
+
+  @Autowired
+  private MongoTemplate mongoTemplate;
+
+  @Autowired
+  private Provider<ModelMapper> modelMapperProvider;
+
   @PostConstruct
   private void init() {
     GlobalConstants.initCache();
   }
-
-  @Autowired
-  private RestaurantRepository restaurantRepository;
-  @Autowired
-  private ObjectMapper objectMapper;
-  @Autowired
-  private Provider<ModelMapper> modelMapperProvider;
 
   private boolean isOpenNow(LocalTime time, RestaurantEntity res) {
     LocalTime openingTime = LocalTime.parse(res.getOpensAt());
@@ -53,10 +66,20 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
     return time.isAfter(openingTime) && time.isBefore(closingTime);
   }
 
-  // COMPLETED: CRIO_TASK_MODULE_REDIS - Add cache support.
+  // COMPLETED: CRIO_TASK_MODULE_NOSQL
+  // Objectives:
+  // 1. Implement findAllRestaurantsCloseby.
+  // 2. Remember to keep the precision of GeoHash in mind while using it as a key.
   // Check RestaurantRepositoryService.java file for the interface contract.
   public List<Restaurant> findAllRestaurantsCloseBy(Double latitude,
-      Double longitude, LocalTime currentTime, Double servingRadiusInKms) {
+                                                    Double longitude, LocalTime currentTime,
+                                                    Double servingRadiusInKms) {
+
+    // COMPLETED: CRIO_TASK_MODULE_REDIS
+    // We want to use cache to speed things up. Write methods that perform the same functionality,
+    // but using the cache if it is present and reachable.
+    // Remember, you must ensure that if cache is not present, the queries are directed at the
+    // database instead.
     if (GlobalConstants.isCacheAvailable()) {
       return findAllRestaurantsCloseByFromCache(latitude, longitude, currentTime,
           servingRadiusInKms);
@@ -66,33 +89,23 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
   }
 
   private List<Restaurant> findAllRestaurantsCloseFromDb(Double latitude, Double longitude,
-       LocalTime currentTime, Double servingRadiusInKms) {
+                                                         LocalTime currentTime,
+                                                         Double servingRadiusInKms) {
     List<RestaurantEntity> restaurantEntities = restaurantRepository.findAll();
     List<Restaurant> restaurants = new ArrayList<>();
     log.info("Restaurants received: {}", restaurantEntities.size());
     for (RestaurantEntity restaurantEntity : restaurantEntities) {
-      if (GeoUtils.findDistanceInKm(latitude, longitude, restaurantEntity.getLatitude(),
-          restaurantEntity.getLongitude()) <= servingRadiusInKms
-          && isOpenNow(currentTime, restaurantEntity)) {
+      if (isRestaurantCloseByAndOpen(restaurantEntity, currentTime, latitude, longitude,
+          servingRadiusInKms)) {
         restaurants.add(modelMapperProvider.get().map(restaurantEntity, Restaurant.class));
       }
     }
     return restaurants;
   }
 
-
-  // COMPLETED: CRIO_TASK_MODULE_REDIS - Implement caching.
-
-  /**
-   * Implement caching for restaurants closeby.
-   * Whenever the entry is not there in the cache, you will have to populate it from DB.
-   * If the entry is already available in the cache, then return it from cache to save DB lookup.
-   * The cache entries should expire in GlobalConstants.REDIS_ENTRY_EXPIRY_IN_SECONDS.
-   * Make sure you use something like a GeoHash with a slightly lower precision,
-   * so that for lat/long that are slightly close, the function returns the same set of restaurants.
-   */
-  private List<Restaurant> findAllRestaurantsCloseByFromCache(
-      Double latitude, Double longitude, LocalTime currentTime, Double servingRadiusInKms) {
+  private List<Restaurant> findAllRestaurantsCloseByFromCache(Double latitude, Double longitude,
+                                                              LocalTime currentTime,
+                                                              Double servingRadiusInKms) {
     GeoHash geoHash = GeoHash.withCharacterPrecision(latitude, longitude, 7);
     String key = geoHash.toBase32();
     Jedis jedis = GlobalConstants.getJedisPool().getResource();
@@ -115,6 +128,123 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
         e.printStackTrace();
       }
     }
+    return restaurants;
+  }
+
+  // COMPLETED: CRIO_TASK_MODULE_RESTAURANTSEARCH
+  // Objective:
+  // Find restaurants whose names have an exact or partial match with the search query.
+  @Override
+  public List<Restaurant> findRestaurantsByName(Double latitude, Double longitude,
+                                                String searchString, LocalTime currentTime,
+                                                Double servingRadiusInKms) {
+    final String regexExact = String.format("^%s$", searchString);
+    final String regexAll = String.format(".*%s.*", searchString);
+    Query queryExact = new Query();
+    queryExact.addCriteria(Criteria.where("name").regex(regexExact, "i"));
+    Query queryRestMatches = new Query();
+    queryRestMatches.addCriteria(new Criteria().andOperator(
+        Criteria.where("name").regex(regexAll, "i"),
+        Criteria.where("name").not().regex(regexExact, "i")
+    ));
+    List<RestaurantEntity> restaurantEntities = new ArrayList<>();
+    restaurantEntities.addAll(mongoTemplate.find(queryExact, RestaurantEntity.class));
+    restaurantEntities.addAll(mongoTemplate.find(queryRestMatches, RestaurantEntity.class));
+
+    return filterRestaurantEntities(restaurantEntities, currentTime, latitude, longitude,
+        servingRadiusInKms);
+  }
+
+  // COMPLETES: CRIO_TASK_MODULE_RESTAURANTSEARCH
+  // Objective:
+  // Find restaurants whose attributes (cuisines) intersect with the search query.
+  @Override
+  public List<Restaurant> findRestaurantsByAttributes(
+      Double latitude, Double longitude,
+      String searchString, LocalTime currentTime, Double servingRadiusInKms) {
+    final String regexAll = String.format(".*%s.*", searchString);
+    Query queryRestMatches = new Query();
+    queryRestMatches.addCriteria(Criteria.where("attributes").in(regexAll, "i"));
+    List<RestaurantEntity> restaurantEntities =
+        new ArrayList<>(mongoTemplate.find(queryRestMatches, RestaurantEntity.class));
+
+    return filterRestaurantEntities(restaurantEntities, currentTime, latitude, longitude,
+        servingRadiusInKms);
+  }
+
+  // TODO: CRIO_TASK_MODULE_RESTAURANTSEARCH
+  // Objective:
+  // Find restaurants which serve food items whose names form a complete or partial match
+  // with the search query.
+  @Override
+  public List<Restaurant> findRestaurantsByItemName(
+      Double latitude, Double longitude,
+      String searchString, LocalTime currentTime, Double servingRadiusInKms) {
+
+
+    return new ArrayList<>();
+  }
+
+  // COMPLETED: CRIO_TASK_MODULE_RESTAURANTSEARCH
+  // Objective:
+  // Find restaurants which serve food items whose attributes intersect with the search query.
+  @Override
+  public List<Restaurant> findRestaurantsByItemAttributes(Double latitude, Double longitude,
+                                                          String searchString,
+                                                          LocalTime currentTime,
+                                                          Double servingRadiusInKms) {
+    final String regexAll = String.format(".*%s.*", searchString);
+    LookupOperation lookupOperation = LookupOperation.newLookup()
+        .from("menus")
+        .localField("restaurantId")
+        .foreignField("restaurantId")
+        .as("menu");
+
+    MatchOperation matchOperation =
+        match(new Criteria("menu.item.attributes").in().regex(regexAll, "i"));
+
+    Aggregation aggregation = Aggregation.newAggregation(lookupOperation, matchOperation);
+    AggregationResults<RestaurantEntity> entityAggregationResults =
+        mongoTemplate.aggregate(aggregation, "restaurants", RestaurantEntity.class);
+
+    return filterRestaurantEntities(entityAggregationResults.getMappedResults(), currentTime,
+        latitude, longitude,
+        servingRadiusInKms);
+  }
+
+  // COMPLETED: CRIO_TASK_MODULE_NOSQL
+  // Objective:
+  // 1. Check if a restaurant is nearby and open. If so, it is a candidate to be returned.
+  // NOTE: How far exactly is "nearby"?
+
+  /**
+   * Utility method to check if a restaurant is within the serving radius at a given time.
+   *
+   * @return boolean True if restaurant falls within serving radius and is open, false otherwise
+   */
+  private boolean isRestaurantCloseByAndOpen(RestaurantEntity restaurantEntity,
+                                             LocalTime currentTime, Double latitude,
+                                             Double longitude, Double servingRadiusInKms) {
+    if (isOpenNow(currentTime, restaurantEntity)) {
+      return GeoUtils.findDistanceInKm(latitude, longitude,
+          restaurantEntity.getLatitude(), restaurantEntity.getLongitude())
+          < servingRadiusInKms;
+    }
+
+    return false;
+  }
+
+
+  private List<Restaurant> filterRestaurantEntities(List<RestaurantEntity> restaurantEntities,
+                                                    LocalTime currentTime, Double latitude,
+                                                    Double longitude, Double servingRadiusInKms) {
+    List<Restaurant> restaurants = new ArrayList<>();
+    restaurantEntities.forEach(restaurantEntity -> {
+      if (isRestaurantCloseByAndOpen(restaurantEntity, currentTime, latitude, longitude,
+          servingRadiusInKms)) {
+        restaurants.add(modelMapperProvider.get().map(restaurantEntity, Restaurant.class));
+      }
+    });
     return restaurants;
   }
 }

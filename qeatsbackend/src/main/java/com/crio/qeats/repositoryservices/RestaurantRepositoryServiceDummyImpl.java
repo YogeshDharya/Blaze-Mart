@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RestaurantRepositoryServiceDummyImpl implements RestaurantRepositoryService {
+public class RestaurantRepositoryServiceDummyImpl  {
   private static final String FIXTURES = "fixtures/exchanges";
   private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -30,7 +30,7 @@ public class RestaurantRepositoryServiceDummyImpl implements RestaurantRepositor
   // It will load some dummy restaurants and change their latitude/longitude near
   // the lat/long you pass. In the next module, once you start using mongodb, you will not use
   // it anymore.
-  @Override
+
   public List<Restaurant> findAllRestaurantsCloseBy(Double latitude, Double longitude,
       LocalTime currentTime, Double servingRadiusInKms) {
     List<Restaurant> restaurantList = new ArrayList<>();

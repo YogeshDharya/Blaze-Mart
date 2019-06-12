@@ -10,8 +10,11 @@ import com.crio.qeats.dto.Restaurant;
 import com.crio.qeats.exchanges.GetRestaurantsRequest;
 import com.crio.qeats.exchanges.GetRestaurantsResponse;
 import com.crio.qeats.repositoryservices.RestaurantRepositoryService;
+
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +44,49 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     List<Restaurant> restaurants = restaurantRepositoryService
         .findAllRestaurantsCloseBy(currentLat, currentLong, currentTime, servingRange);
+    return new GetRestaurantsResponse(restaurants);
+  }
+
+  // COMPLETED: CRIO_TASK_MODULE_RESTAURANTSEARCH
+  // Implement findRestaurantsBySearchQuery. The request object has the search string.
+  // We have to combine results from multiple sources:
+  // 1. Restaurants by name (exact and inexact)
+  // 2. Restaurants by cuisines (also called attributes)
+  // 3. Restaurants by food items it serves
+  // 4. Restaurants by food item attributes (spicy, sweet, etc)
+  // Remember, a restaurant must be present only once in the resulting list.
+  // Check RestaurantService.java file for the interface contract.
+  @Override
+  public GetRestaurantsResponse findRestaurantsBySearchQuery(
+      GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime) {
+    if (!getRestaurantsRequest.hasSearchQuery()) {
+      return findAllRestaurantsCloseBy(getRestaurantsRequest, currentTime);
+    }
+
+    List<Restaurant> restaurants = new ArrayList<>();
+    final Double latitude = getRestaurantsRequest.getLatitude();
+    final Double longitude = getRestaurantsRequest.getLongitude();
+    final String searchQuery = getRestaurantsRequest.getSearchFor();
+    Double servingRadiusInKms = normalHoursServingRadiusInKms;
+    if (isPeekHour(currentTime)) {
+      servingRadiusInKms = peakHoursServingRadiusInKms;
+    }
+
+    // Restaurants by Name
+    restaurants.addAll(restaurantRepositoryService.findRestaurantsByName(latitude, longitude,
+        searchQuery, currentTime, servingRadiusInKms));
+
+    // Restaurants by Cuisines (Attributes)
+    restaurants.addAll(restaurantRepositoryService.findRestaurantsByAttributes(latitude,
+        longitude, searchQuery, currentTime, servingRadiusInKms));
+
+    // Restaurants by Food Item
+    restaurants.addAll(restaurantRepositoryService.findRestaurantsByItemName(latitude,
+        longitude, searchQuery, currentTime, servingRadiusInKms));
+
+    // Restaurants by Food Item Attributes
+    restaurants.addAll(restaurantRepositoryService.findRestaurantsByItemAttributes(latitude,
+        longitude, searchQuery, currentTime, servingRadiusInKms));
     return new GetRestaurantsResponse(restaurants);
   }
 

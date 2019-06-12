@@ -12,7 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.RequestParam;
 
-// TODO: CRIO_TASK_MODULE_RESTAURANTSAPI - Implement GetRestaurantsRequest.
+// COMPLETED: CRIO_TASK_MODULE_RESTAURANTSAPI - Implement GetRestaurantsRequest.
 // Complete the class such that it is able to deserialize the incoming query params from
 // REST API clients.
 // For instance, if a REST client calls API

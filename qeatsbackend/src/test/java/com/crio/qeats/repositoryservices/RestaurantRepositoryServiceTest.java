@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-// TODO: CRIO_TASK_MODULE_NOSQL
+// COMPLETED: CRIO_TASK_MODULE_NOSQL
 // Pass all the RestaurantRepositoryService test cases.
 // Make modifications to the tests if necessary.
 @SpringBootTest(classes = {QEatsApplication.class})

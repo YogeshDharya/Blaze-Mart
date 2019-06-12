@@ -28,7 +28,7 @@ public class RestaurantController {
   @Autowired
   private RestaurantService restaurantService;
 
-  // TODO: CRIO_TASK_MODULE_MULTITHREADING - Improve the performance of this GetRestaurants API
+  // COMPLETED: CRIO_TASK_MODULE_MULTITHREADING - Improve the performance of this GetRestaurants API
   //  and keep the functionality same.
   // Get the list of open restaurants near the specified latitude/longitude & matching searchFor.
   // API URI: /qeats/v1/restaurants?latitude=21.93&longitude=23.0&searchFor=tamil

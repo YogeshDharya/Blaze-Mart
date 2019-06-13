@@ -129,15 +129,16 @@ public class RestaurantController {
     }
 
     GetRestaurantsResponse getRestaurantsResponse;
+    final LocalTime now = LocalTime.now();
 
     if (getRestaurantsRequest.getSearchFor() != null) {
       getRestaurantsResponse =
-          restaurantService.findRestaurantsBySearchQuery(getRestaurantsRequest, LocalTime.now());
+          restaurantService.findRestaurantsBySearchQuery(getRestaurantsRequest, now);
     } else {
       getRestaurantsResponse = restaurantService
-          .findAllRestaurantsCloseBy(getRestaurantsRequest, LocalTime.now());
+          .findAllRestaurantsCloseBy(getRestaurantsRequest, now);
     }
-    log.info("getRestaurants returned {}", getRestaurantsResponse);
+    log.info("getRestaurants returned {}", getRestaurantsResponse.getRestaurants().size());
 
     return ResponseEntity.ok().body(getRestaurantsResponse);
   }

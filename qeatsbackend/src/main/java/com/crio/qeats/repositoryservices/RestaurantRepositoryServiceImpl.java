@@ -201,7 +201,7 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
         .as("menu");
 
     MatchOperation matchOperation =
-        match(new Criteria("menu.item.attributes").in().regex(regexAll, "i"));
+        match(new Criteria("menu.item.attributes").in(regexAll));
 
     Aggregation aggregation = Aggregation.newAggregation(lookupOperation, matchOperation);
     AggregationResults<RestaurantEntity> entityAggregationResults =

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestParam;
 
 // COMPLETED: CRIO_TASK_MODULE_RESTAURANTSAPI - Implement GetRestaurantsRequest.
@@ -20,14 +21,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 // this class should be able to deserialize lat/long and optional searchFor from that.
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@Slf4j
+//@AllArgsConstructor
 public class GetRestaurantsRequest {
 
   Double latitude;
   Double longitude;
   String searchFor;
 
+  public GetRestaurantsRequest(Double latitude, Double longitude, String searchFor) {
+    log.info("GetRestaurantsRequest AllArgs {} " , searchFor);
+    this.latitude = latitude;
+    this.longitude = longitude;
+    this.searchFor = searchFor;
+  }
+
   public GetRestaurantsRequest(Double latitude, Double longitude) {
+    log.info("GetRestaurantsRequest Lat,Long");
     this.latitude = latitude;
     this.longitude = longitude;
   }

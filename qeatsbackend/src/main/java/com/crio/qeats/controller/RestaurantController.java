@@ -19,9 +19,12 @@ import com.crio.qeats.exchanges.PostOrderRequest;
 import com.crio.qeats.services.CartAndOrderService;
 import com.crio.qeats.services.MenuService;
 import com.crio.qeats.services.RestaurantService;
+
 import java.time.LocalTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import lombok.extern.log4j.Log4j2;
@@ -175,6 +178,10 @@ public class RestaurantController {
   @GetMapping(MENU_API)
   public ResponseEntity<GetMenuResponse> getMenu(
       @RequestParam("restaurantId") String restaurantId) {
+    if (StringUtils.isEmpty(restaurantId)) {
+      return ResponseEntity.badRequest().body(null);
+    }
+
     GetMenuResponse getMenuResponse = menuService.findMenu(restaurantId);
 
     log.info("getMenu returned with {}", getMenuResponse);
@@ -217,9 +224,9 @@ public class RestaurantController {
   //          : 5xx, if server side error.
   // Eg:
   // curl -X GET "http://localhost:8081/qeats/v1/cart?userId=arun"
-   public ResponseEntity<Cart> getCart(GetCartRequest getCartRequest) {
-     return null;
-   }
+  public ResponseEntity<Cart> getCart(GetCartRequest getCartRequest) {
+    return null;
+  }
 
 
   // TODO: CRIO_TASK_MODULE_MENUAPI: Implement add item to cart
@@ -265,9 +272,9 @@ public class RestaurantController {
   // HTTP Code: 4xx, if client side error.
   //          : 5xx, if server side error.
   // curl -X GET "http://localhost:8081/qeats/v1/cart/item"
-   public ResponseEntity<CartModifiedResponse> addItem(AddCartRequest addCartRequest) {
-     return null;
-   }
+  public ResponseEntity<CartModifiedResponse> addItem(AddCartRequest addCartRequest) {
+    return null;
+  }
 
 
   // TODO: CRIO_TASK_MODULE_MENUAPI: Implement remove item from given cartId
@@ -300,10 +307,9 @@ public class RestaurantController {
   // HTTP Code: 4xx, if client side error.
   //          : 5xx, if server side error.
   // curl -X GET "http://localhost:8081/qeats/v1/cart/item"
-   public ResponseEntity<CartModifiedResponse> deleteItem(DeleteCartRequest deleteCartRequest) {
-     return null;
-   }
-
+  public ResponseEntity<CartModifiedResponse> deleteItem(DeleteCartRequest deleteCartRequest) {
+    return null;
+  }
 
 
   // TODO: CRIO_TASK_MODULE_MENUAPI: Place order for the given cartId.
@@ -342,9 +348,9 @@ public class RestaurantController {
   // HTTP Code: 4xx, if client side error.
   //          : 5xx, if server side error.
   // curl -X GET "http://localhost:8081/qeats/v1/order"
-    public ResponseEntity<Order> placeOrder(PostOrderRequest postOrderRequest) {
-      return null;
-    }
+  public ResponseEntity<Order> placeOrder(PostOrderRequest postOrderRequest) {
+    return null;
+  }
 
 
 }

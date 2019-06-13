@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Data
 @NoArgsConstructor
 @Slf4j
-//@AllArgsConstructor
 public class GetRestaurantsRequest {
 
   Double latitude;

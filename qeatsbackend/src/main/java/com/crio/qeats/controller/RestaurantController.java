@@ -134,7 +134,6 @@ public class RestaurantController {
       getRestaurantsResponse =
           restaurantService.findRestaurantsBySearchQuery(getRestaurantsRequest, LocalTime.now());
     } else {
-
       getRestaurantsResponse = restaurantService
           .findAllRestaurantsCloseBy(getRestaurantsRequest, LocalTime.now());
     }

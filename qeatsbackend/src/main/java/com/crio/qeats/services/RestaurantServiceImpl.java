@@ -11,14 +11,19 @@ import com.crio.qeats.exchanges.GetRestaurantsRequest;
 import com.crio.qeats.exchanges.GetRestaurantsResponse;
 import com.crio.qeats.repositoryservices.RestaurantRepositoryService;
 
+import java.text.Normalizer;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.micrometer.core.instrument.util.StringEscapeUtils;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
+import org.springframework.web.util.JavaScriptUtils;
 
 @Service
 @Log4j2
@@ -45,6 +50,10 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     List<Restaurant> restaurants = restaurantRepositoryService
         .findAllRestaurantsCloseBy(currentLat, currentLong, currentTime, servingRange);
+
+    restaurants.forEach(restaurant -> {
+      restaurant.setName(StringUtils.stripAccents(restaurant.getName()));
+    });
     return new GetRestaurantsResponse(restaurants);
   }
 
@@ -88,6 +97,9 @@ public class RestaurantServiceImpl implements RestaurantService {
     // Restaurants by Food Item Attributes
     restaurants.addAll(restaurantRepositoryService.findRestaurantsByItemAttributes(latitude,
         longitude, searchQuery, currentTime, servingRadiusInKms));
+    restaurants.forEach(restaurant -> {
+      restaurant.setName(StringUtils.stripAccents(restaurant.getName()));
+    });
     return new GetRestaurantsResponse(restaurants);
   }
 

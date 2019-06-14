@@ -309,6 +309,11 @@ public class RestaurantController {
       String restaurantId = addCartRequest.getRestaurantId();
       String cartId = addCartRequest.getCartId();
       CartModifiedResponse cart = cartAndOrderService.addItemToCart(itemId, cartId, restaurantId);
+      if (cart.getCartResponseType() == ITEM_NOT_FROM_SAME_RESTAURANT) {
+        return ResponseEntity
+            .badRequest()
+            .body(cart);
+      }
       return ResponseEntity.ok(cart);
     } catch (ItemNotFromSameRestaurantException e) {
       return ResponseEntity

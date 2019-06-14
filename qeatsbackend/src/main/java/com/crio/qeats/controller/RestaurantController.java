@@ -11,7 +11,6 @@ import static com.crio.qeats.exceptions.QEatsException.ITEM_NOT_FROM_SAME_RESTAU
 import com.crio.qeats.dto.Cart;
 import com.crio.qeats.dto.Order;
 import com.crio.qeats.exceptions.EmptyCartException;
-import com.crio.qeats.exceptions.ItemNotFromSameRestaurantException;
 import com.crio.qeats.exchanges.AddCartRequest;
 import com.crio.qeats.exchanges.CartModifiedResponse;
 import com.crio.qeats.exchanges.DeleteCartRequest;
@@ -311,13 +310,13 @@ public class RestaurantController {
       CartModifiedResponse cart = cartAndOrderService.addItemToCart(itemId, cartId, restaurantId);
       if (cart.getCartResponseType() == ITEM_NOT_FROM_SAME_RESTAURANT) {
         return ResponseEntity
-            .badRequest()
+            .ok()
             .body(cart);
       }
       return ResponseEntity.ok(cart);
-    } catch (ItemNotFromSameRestaurantException e) {
+    } catch (Exception e) {
       return ResponseEntity
-          .badRequest()
+          .ok()
           .body(new CartModifiedResponse(new Cart(), ITEM_NOT_FROM_SAME_RESTAURANT));
     }
   }

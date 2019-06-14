@@ -52,20 +52,15 @@ public class CartAndOrderServiceImpl implements CartAndOrderService {
   @Override
   public CartModifiedResponse addItemToCart(String itemId, String cartId, String restaurantId)
       throws ItemNotFromSameRestaurantException {
-    CartModifiedResponse cartModifiedResponse = null;
     Item item = null;
     try {
       item = menuService.findItem(itemId, restaurantId);
-      cartModifiedResponse = new CartModifiedResponse(cartRepositoryService.addItem(item, cartId,
+      return new CartModifiedResponse(cartRepositoryService.addItem(item, cartId,
           restaurantId), 0);
     } catch (ItemNotFoundInRestaurantMenuException e) {
       Cart cart = cartRepositoryService.findCartByCartId(cartId);
-      cartModifiedResponse = new CartModifiedResponse(cart, ITEM_NOT_FROM_SAME_RESTAURANT);
-      return cartModifiedResponse;
-    } catch (CartNotFoundException e) {
-      cartModifiedResponse = new CartModifiedResponse(new Cart(), 0);
+      return new CartModifiedResponse(cart, ITEM_NOT_FROM_SAME_RESTAURANT);
     }
-    return cartModifiedResponse;
   }
 
   @Override

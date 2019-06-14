@@ -6,8 +6,6 @@
 
 package com.crio.qeats.controller;
 
-import static com.crio.qeats.exceptions.QEatsException.ITEM_NOT_FROM_SAME_RESTAURANT;
-
 import com.crio.qeats.dto.Cart;
 import com.crio.qeats.dto.Order;
 import com.crio.qeats.exceptions.EmptyCartException;
@@ -308,17 +306,17 @@ public class RestaurantController {
       String restaurantId = addCartRequest.getRestaurantId();
       String cartId = addCartRequest.getCartId();
       CartModifiedResponse cart = cartAndOrderService.addItemToCart(itemId, cartId, restaurantId);
-      if (cart.getCartResponseType() == ITEM_NOT_FROM_SAME_RESTAURANT) {
-        return ResponseEntity
-            .ok()
-            .body(cart);
-      }
+      //      if (cart.getCartResponseType() == ITEM_NOT_FROM_SAME_RESTAURANT) {
+      //        return ResponseEntity
+      //            .badRequest()
+      //            .body(cart);
+      //      }
       return ResponseEntity.ok(cart);
     } catch (Exception e) {
-      return ResponseEntity
-          .badRequest()
-          .build();
+      return ResponseEntity.badRequest().build();
     }
+
+
   }
 
 

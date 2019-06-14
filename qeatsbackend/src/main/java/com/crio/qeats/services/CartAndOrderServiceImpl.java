@@ -69,7 +69,7 @@ public class CartAndOrderServiceImpl implements CartAndOrderService {
       cart = cartRepositoryService.addItem(item, cartId, restaurantId);
       cartModifiedResponse = new CartModifiedResponse(cart, 0);
     } else {
-      cartModifiedResponse = new CartModifiedResponse(cart, ITEM_NOT_FOUND_IN_RESTAURANT_MENU);
+      cartModifiedResponse = new CartModifiedResponse(cart, 102);
     }
     return cartModifiedResponse;
   }

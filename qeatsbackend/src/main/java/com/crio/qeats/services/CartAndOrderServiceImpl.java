@@ -60,6 +60,8 @@ public class CartAndOrderServiceImpl implements CartAndOrderService {
     } catch (ItemNotFoundInRestaurantMenuException e) {
       Cart cart = cartRepositoryService.findCartByCartId(cartId);
       return new CartModifiedResponse(cart, ITEM_NOT_FOUND_IN_RESTAURANT_MENU);
+    } catch (CartNotFoundException e) {
+      return new CartModifiedResponse(new Cart(), ITEM_NOT_FOUND_IN_RESTAURANT_MENU);
     }
   }
 

@@ -312,8 +312,8 @@ public class RestaurantController {
       return ResponseEntity.ok(cart);
     } catch (ItemNotFromSameRestaurantException e) {
       return ResponseEntity
-          .badRequest()
-          .body(new CartModifiedResponse(null, ITEM_NOT_FROM_SAME_RESTAURANT));
+          .status(ITEM_NOT_FROM_SAME_RESTAURANT)
+          .body(new CartModifiedResponse(new Cart(), ITEM_NOT_FROM_SAME_RESTAURANT));
     }
   }
 

@@ -133,7 +133,7 @@ public class RestaurantController {
       getRestaurantsResponse = restaurantService
           .findAllRestaurantsCloseBy(getRestaurantsRequest, now);
     }
-    log.info("getRestaurants returned {}", getRestaurantsResponse.getRestaurants().size());
+    log.info("getRestaurants returned {}", getRestaurantsResponse);
 
     return ResponseEntity.ok().body(getRestaurantsResponse);
   }
@@ -284,7 +284,7 @@ public class RestaurantController {
   //          : 5xx, if server side error.
   // curl -X GET "http://localhost:8081/qeats/v1/cart/item"
   @PostMapping(CART_ITEM_API)
-  public ResponseEntity<CartModifiedResponse> addItem(AddCartRequest addCartRequest) {
+  public ResponseEntity<CartModifiedResponse> addItem(@RequestBody AddCartRequest addCartRequest) {
     log.info("addItem {}", addCartRequest);
     if (StringUtils.isEmpty(!addCartRequest.isValidRequest())) {
       return ResponseEntity.badRequest().build();
@@ -336,7 +336,7 @@ public class RestaurantController {
   //          : 5xx, if server side error.
   // curl -X GET "http://localhost:8081/qeats/v1/cart/item"
   @DeleteMapping(CART_ITEM_API)
-  public ResponseEntity<CartModifiedResponse> deleteItem(DeleteCartRequest deleteCartRequest) {
+  public ResponseEntity<CartModifiedResponse> deleteItem(@RequestBody DeleteCartRequest deleteCartRequest) {
     log.info("deleteItem {}", deleteCartRequest);
     if (StringUtils.isEmpty(!deleteCartRequest.isValidRequest())) {
       return ResponseEntity.badRequest().build();
@@ -390,7 +390,7 @@ public class RestaurantController {
   //          : 5xx, if server side error.
   // curl -X GET "http://localhost:8081/qeats/v1/order"
   @PostMapping(POST_ORDER_API)
-  public ResponseEntity<Order> placeOrder(PostOrderRequest postOrderRequest) {
+  public ResponseEntity<Order> placeOrder(@RequestBody PostOrderRequest postOrderRequest) {
     log.info("placeOrder {}", postOrderRequest);
     if (!postOrderRequest.isValidRequest()) {
       return ResponseEntity.badRequest().build();

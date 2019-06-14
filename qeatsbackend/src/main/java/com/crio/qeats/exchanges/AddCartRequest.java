@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class AddCartRequest {
   private String cartId;
   private String itemId;

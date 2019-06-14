@@ -19,7 +19,6 @@ import java.util.concurrent.Executor;
 
 @SpringBootApplication
 @Log4j2
-@EnableAsync
 public class QEatsApplication {
 
   public static void main(String[] args) {

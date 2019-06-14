@@ -25,16 +25,18 @@ public class CartAndOrderServiceImpl implements CartAndOrderService {
   private MenuService menuService;
 
   @Override
-  public Cart findOrCreateCart(String userId) {
+  public Cart findOrCreateCart(String userId) throws UserNotFoundException {
     Optional<Cart> cartByUserId = cartRepositoryService.findCartByUserId(userId);
 
     if (cartByUserId.isPresent()) {
       return cartByUserId.get();
     } else {
-      String cartId = cartRepositoryService.createCart(new Cart());
+      Cart cart = new Cart();
+      cart.setUserId(userId);
+      cart.setRestaurantId("");
+      String cartId = cartRepositoryService.createCart(cart);
+      return cartRepositoryService.findCartByCartId(cartId);
     }
-
-    throw new UserNotFoundException(String.format("User with id %s not found", userId));
   }
 
   @Override

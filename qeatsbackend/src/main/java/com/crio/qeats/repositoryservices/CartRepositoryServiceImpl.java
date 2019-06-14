@@ -67,6 +67,7 @@ public class CartRepositoryServiceImpl implements CartRepositoryService {
 
     if (cartById.isPresent()) {
       cartById.get().addItem(item);
+      cartById.get().setRestaurantId(restaurantId);
       CartEntity cartEntity = cartRepository.save(cartById.get());
       return mapper.map(cartEntity, Cart.class);
     }
@@ -81,6 +82,9 @@ public class CartRepositoryServiceImpl implements CartRepositoryService {
 
     if (cartById.isPresent()) {
       cartById.get().removeItem(item);
+      if (cartById.get().getItems().size() == 0) {
+        cartById.get().setRestaurantId("");
+      }
       CartEntity cartEntity = cartRepository.save(cartById.get());
       return mapper.map(cartEntity, Cart.class);
     }

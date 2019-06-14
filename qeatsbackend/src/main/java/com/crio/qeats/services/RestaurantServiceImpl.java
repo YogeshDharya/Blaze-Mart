@@ -10,20 +10,17 @@ import com.crio.qeats.dto.Restaurant;
 import com.crio.qeats.exchanges.GetRestaurantsRequest;
 import com.crio.qeats.exchanges.GetRestaurantsResponse;
 import com.crio.qeats.repositoryservices.RestaurantRepositoryService;
+import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-
-import lombok.extern.log4j.Log4j2;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
 
 @Service
 @Log4j2
@@ -33,9 +30,6 @@ public class RestaurantServiceImpl implements RestaurantService {
   private final Double normalHoursServingRadiusInKms = 5.0;
   @Autowired
   private RestaurantRepositoryService restaurantRepositoryService;
-
-  @Autowired
-  private Executor executor;
 
 
   // COMPLETED: CRIO_TASK_MODULE_RESTAURANTSAPI - Implement findAllRestaurantsCloseby.
@@ -51,7 +45,8 @@ public class RestaurantServiceImpl implements RestaurantService {
       servingRange = peakHoursServingRadiusInKms;
     }
 
-    List<Restaurant> restaurants = restaurantRepositoryService
+    List<Restaurant> restaurants;
+    restaurants = restaurantRepositoryService
         .findAllRestaurantsCloseBy(currentLat, currentLong, currentTime, servingRange);
 
     restaurants.forEach(restaurant -> {
@@ -133,8 +128,8 @@ public class RestaurantServiceImpl implements RestaurantService {
                                                                              Double longitude,
                                                                              String searchQuery,
                                                                              Double finalServingRadiusInKms) {
-    return CompletableFuture.supplyAsync(()->restaurantRepositoryService.findRestaurantsByItemAttributes(latitude, longitude,
-        searchQuery, currentTime, finalServingRadiusInKms), executor);
+    return CompletableFuture.completedFuture(restaurantRepositoryService.findRestaurantsByItemAttributes(latitude, longitude,
+        searchQuery, currentTime, finalServingRadiusInKms));
   }
 
   @Async
@@ -143,8 +138,8 @@ public class RestaurantServiceImpl implements RestaurantService {
                                                                        Double longitude,
                                                                        String searchQuery,
                                                                        Double finalServingRadiusInKms) {
-    return CompletableFuture.supplyAsync(()->restaurantRepositoryService.findRestaurantsByItemName(latitude, longitude,
-        searchQuery, currentTime, finalServingRadiusInKms), executor);
+    return CompletableFuture.completedFuture(restaurantRepositoryService.findRestaurantsByItemName(latitude, longitude,
+        searchQuery, currentTime, finalServingRadiusInKms));
   }
 
   @Async
@@ -153,8 +148,8 @@ public class RestaurantServiceImpl implements RestaurantService {
                                                                          Double longitude,
                                                                          String searchQuery,
                                                                          Double finalServingRadiusInKms) {
-    return CompletableFuture.supplyAsync(()->restaurantRepositoryService.findRestaurantsByAttributes(latitude, longitude,
-        searchQuery, currentTime, finalServingRadiusInKms), executor);
+    return CompletableFuture.completedFuture(restaurantRepositoryService.findRestaurantsByAttributes(latitude, longitude,
+        searchQuery, currentTime, finalServingRadiusInKms));
   }
 
   @Async
@@ -163,8 +158,8 @@ public class RestaurantServiceImpl implements RestaurantService {
                                                                    Double longitude,
                                                                    String searchQuery,
                                                                    Double finalServingRadiusInKms) {
-    return CompletableFuture.supplyAsync(() -> restaurantRepositoryService.findRestaurantsByName(latitude, longitude,
-        searchQuery, currentTime, finalServingRadiusInKms), executor);
+    return CompletableFuture.completedFuture(restaurantRepositoryService.findRestaurantsByName(latitude, longitude,
+        searchQuery, currentTime, finalServingRadiusInKms));
   }
 
 

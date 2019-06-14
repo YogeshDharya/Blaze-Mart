@@ -46,7 +46,7 @@ public interface CartAndOrderService {
   CartModifiedResponse removeItemFromCart(String itemId, String cartId, String restaurantId);
 
   /**
-   * TODO: CRIO_TASK_MODULE_MENUAPI - Implement postOrder.
+   * COMPLETED: CRIO_TASK_MODULE_MENUAPI - Implement postOrder.
    * Place order for the given cart
    * @param cartId - id of the cart to be converted to order
    * @return Order - return the order that was just placed

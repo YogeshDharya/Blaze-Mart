@@ -13,7 +13,7 @@ public interface OrderRepositoryService {
 
 
   /**
-   * TODO: CRIO_TASK_MODULE_MENUAPI - Implement placeOrder.
+   * COMPLETED: CRIO_TASK_MODULE_MENUAPI - Implement placeOrder.
    * Place order based on the cart.
    * @param cart - cart to use for placing order.
    * @return return - the order that was just placed.

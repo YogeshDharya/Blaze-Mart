@@ -29,7 +29,9 @@ public class CartRepositoryServiceImpl implements CartRepositoryService {
 
   @Override
   public String createCart(Cart cart) {
-    return null;
+    ModelMapper mapper = modelMapperProvider.get();
+    CartEntity cartEntity = cartRepository.save(mapper.map(cart, CartEntity.class));
+    return cartEntity.getId();
   }
 
   @Override

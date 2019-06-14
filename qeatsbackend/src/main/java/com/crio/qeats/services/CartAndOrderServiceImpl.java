@@ -30,6 +30,8 @@ public class CartAndOrderServiceImpl implements CartAndOrderService {
 
     if (cartByUserId.isPresent()) {
       return cartByUserId.get();
+    } else {
+      String cartId = cartRepositoryService.createCart(new Cart());
     }
 
     throw new UserNotFoundException(String.format("User with id %s not found", userId));
@@ -78,6 +80,14 @@ public class CartAndOrderServiceImpl implements CartAndOrderService {
 
   @Override
   public Order postOrder(String cartId) throws EmptyCartException {
-    return null;
+    try {
+      Cart cart = cartRepositoryService.findCartByCartId(cartId);
+      if (cart.getItems().isEmpty()) {
+        throw new EmptyCartException("Cart is empty");
+      }
+      return orderRepositoryService.placeOrder(cart);
+    } catch (CartNotFoundException e) {
+      throw new EmptyCartException("Cart doesn't exist");
+    }
   }
 }

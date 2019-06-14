@@ -8,6 +8,7 @@ package com.crio.qeats.controller;
 
 import com.crio.qeats.dto.Cart;
 import com.crio.qeats.dto.Order;
+import com.crio.qeats.exceptions.EmptyCartException;
 import com.crio.qeats.exceptions.ItemNotFromSameRestaurantException;
 import com.crio.qeats.exceptions.UserNotFoundException;
 import com.crio.qeats.exchanges.*;
@@ -187,7 +188,7 @@ public class RestaurantController {
     return ResponseEntity.ok().body(getMenuResponse);
   }
 
-  // TODO: CRIO_TASK_MODULE_MENUAPI - Implement GET Cart for the given userId.
+  // COMPLETED: CRIO_TASK_MODULE_MENUAPI - Implement GET Cart for the given userId.
   // API URI: /qeats/v1/cart?userId=arun
   // Method: GET
   // Query Params: userId
@@ -284,7 +285,7 @@ public class RestaurantController {
   // curl -X GET "http://localhost:8081/qeats/v1/cart/item"
   @PostMapping(CART_ITEM_API)
   public ResponseEntity<CartModifiedResponse> addItem(AddCartRequest addCartRequest) {
-    log.info("getCart {}", addCartRequest);
+    log.info("addItem {}", addCartRequest);
     if (StringUtils.isEmpty(!addCartRequest.isValidRequest())) {
       return ResponseEntity.badRequest().build();
     }
@@ -336,7 +337,7 @@ public class RestaurantController {
   // curl -X GET "http://localhost:8081/qeats/v1/cart/item"
   @DeleteMapping(CART_ITEM_API)
   public ResponseEntity<CartModifiedResponse> deleteItem(DeleteCartRequest deleteCartRequest) {
-    log.info("getCart {}", deleteCartRequest);
+    log.info("deleteItem {}", deleteCartRequest);
     if (StringUtils.isEmpty(!deleteCartRequest.isValidRequest())) {
       return ResponseEntity.badRequest().build();
     }
@@ -352,7 +353,7 @@ public class RestaurantController {
   }
 
 
-  // TODO: CRIO_TASK_MODULE_MENUAPI: Place order for the given cartId.
+  // COMPLETED: CRIO_TASK_MODULE_MENUAPI: Place order for the given cartId.
   // API URI: /qeats/v1/order
   // Method: POST
   // Request Body format:
@@ -388,8 +389,18 @@ public class RestaurantController {
   // HTTP Code: 4xx, if client side error.
   //          : 5xx, if server side error.
   // curl -X GET "http://localhost:8081/qeats/v1/order"
+  @PostMapping(POST_ORDER_API)
   public ResponseEntity<Order> placeOrder(PostOrderRequest postOrderRequest) {
-    return null;
+    log.info("placeOrder {}", postOrderRequest);
+    if (!postOrderRequest.isValidRequest()) {
+      return ResponseEntity.badRequest().build();
+    }
+
+    try {
+      return ResponseEntity.ok(cartAndOrderService.postOrder(postOrderRequest.getCartId()));
+    } catch (EmptyCartException e) {
+      return ResponseEntity.badRequest().build();
+    }
   }
 
 

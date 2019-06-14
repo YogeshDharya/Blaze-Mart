@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -35,6 +36,7 @@ import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
@@ -140,19 +142,24 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
                                                 Double servingRadiusInKms) {
     final String regexExact = String.format("^%s$", searchString);
     final String regexAll = String.format(".*%s.*", searchString);
-    Query queryExact = new Query();
-    queryExact.addCriteria(Criteria.where("name").regex(regexExact, "i"));
-    Query queryRestMatches = new Query();
-    queryRestMatches.addCriteria(new Criteria().andOperator(
-        Criteria.where("name").regex(regexAll, "i"),
-        Criteria.where("name").not().regex(regexExact, "i")
-    ));
-    List<RestaurantEntity> restaurantEntities = new ArrayList<>();
-    restaurantEntities.addAll(mongoTemplate.find(queryExact, RestaurantEntity.class));
-    restaurantEntities.addAll(mongoTemplate.find(queryRestMatches, RestaurantEntity.class));
 
-    return filterRestaurantEntities(restaurantEntities, currentTime, latitude, longitude,
-        servingRadiusInKms);
+    LinkedHashSet<RestaurantEntity> restaurantEntityLinkedHashSet = new LinkedHashSet<>();
+    Query queryExact = new Query(Criteria.where("name").regex(regexExact, "i"));
+    Query queryRestMatches = new Query(Criteria.where("name").regex(regexAll, "i"));
+
+
+    restaurantEntityLinkedHashSet.addAll(mongoTemplate.find(queryExact, RestaurantEntity.class));
+    restaurantEntityLinkedHashSet.addAll(mongoTemplate.find(queryRestMatches,
+        RestaurantEntity.class));
+
+    List<Restaurant> restaurants = new ArrayList<>();
+    restaurantEntityLinkedHashSet.forEach(restaurantEntity -> {
+      if (isRestaurantCloseByAndOpen(restaurantEntity, currentTime, latitude, longitude,
+          servingRadiusInKms)) {
+        restaurants.add(modelMapperProvider.get().map(restaurantEntity, Restaurant.class));
+      }
+    });
+    return restaurants;
   }
 
   // COMPLETES: CRIO_TASK_MODULE_RESTAURANTSEARCH
@@ -193,23 +200,22 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
                                                           String searchString,
                                                           LocalTime currentTime,
                                                           Double servingRadiusInKms) {
-    final String regexAll = String.format(".*%s.*", searchString);
-    LookupOperation lookupOperation = LookupOperation.newLookup()
-        .from("menus")
-        .localField("restaurantId")
-        .foreignField("restaurantId")
-        .as("menu");
+    // TODO: 6/14/19 Fix the ~15sec overhead of mongodb query here
+//    final String regexAll = String.format(".*%s.*", searchString);
+//    LookupOperation lookupOperation = LookupOperation.newLookup()
+//        .from("menus")
+//        .localField("restaurantId")
+//        .foreignField("restaurantId")
+//        .as("menu");
+//
+//    MatchOperation matchOperation =
+//        match(new Criteria("menu.item.attributes").in(regexAll));
+//
+//    Aggregation aggregation = Aggregation.newAggregation(lookupOperation, matchOperation);
+//    AggregationResults<RestaurantEntity> entityAggregationResults =
+//        mongoTemplate.aggregate(aggregation, "restaurants", RestaurantEntity.class);
 
-    MatchOperation matchOperation =
-        match(new Criteria("menu.item.attributes").in(regexAll));
-
-    Aggregation aggregation = Aggregation.newAggregation(lookupOperation, matchOperation);
-    AggregationResults<RestaurantEntity> entityAggregationResults =
-        mongoTemplate.aggregate(aggregation, "restaurants", RestaurantEntity.class);
-
-    return filterRestaurantEntities(entityAggregationResults.getMappedResults(), currentTime,
-        latitude, longitude,
-        servingRadiusInKms);
+    return new ArrayList<>();
   }
 
   // COMPLETED: CRIO_TASK_MODULE_NOSQL

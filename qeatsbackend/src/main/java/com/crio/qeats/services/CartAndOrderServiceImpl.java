@@ -1,5 +1,7 @@
 package com.crio.qeats.services;
 
+import static com.crio.qeats.exceptions.QEatsException.ITEM_NOT_FROM_SAME_RESTAURANT;
+
 import com.crio.qeats.dto.Cart;
 import com.crio.qeats.dto.Item;
 import com.crio.qeats.dto.Order;
@@ -57,7 +59,9 @@ public class CartAndOrderServiceImpl implements CartAndOrderService {
       cartModifiedResponse = new CartModifiedResponse(cartRepositoryService.addItem(item, cartId,
           restaurantId), 0);
     } catch (ItemNotFoundInRestaurantMenuException e) {
-      throw new ItemNotFromSameRestaurantException();
+      Cart cart = cartRepositoryService.findCartByCartId(cartId);
+      cartModifiedResponse = new CartModifiedResponse(cart, ITEM_NOT_FROM_SAME_RESTAURANT);
+      return cartModifiedResponse;
     } catch (CartNotFoundException e) {
       cartModifiedResponse = new CartModifiedResponse(new Cart(), 0);
     }

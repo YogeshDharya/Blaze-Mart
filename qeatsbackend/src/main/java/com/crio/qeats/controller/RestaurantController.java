@@ -12,7 +12,6 @@ import com.crio.qeats.dto.Cart;
 import com.crio.qeats.dto.Order;
 import com.crio.qeats.exceptions.EmptyCartException;
 import com.crio.qeats.exceptions.ItemNotFromSameRestaurantException;
-import com.crio.qeats.exceptions.UserNotFoundException;
 import com.crio.qeats.exchanges.AddCartRequest;
 import com.crio.qeats.exchanges.CartModifiedResponse;
 import com.crio.qeats.exchanges.DeleteCartRequest;
@@ -244,12 +243,13 @@ public class RestaurantController {
     }
 
     // If user found then return Cart else BAD_REQUEST
+    Cart cart;
     try {
-      Cart cart = cartAndOrderService.findOrCreateCart(getCartRequest.getUserId());
-      return ResponseEntity.ok(cart);
-    } catch (UserNotFoundException e) {
+      cart = cartAndOrderService.findOrCreateCart(getCartRequest.getUserId());
+    } catch (Exception e) {
       return ResponseEntity.badRequest().build();
     }
+    return ResponseEntity.ok(cart);
   }
 
 

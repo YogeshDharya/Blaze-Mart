@@ -38,7 +38,12 @@ public class CartAndOrderServiceImpl implements CartAndOrderService {
       cart.setUserId(userId);
       cart.setRestaurantId("");
       String cartId = cartRepositoryService.createCart(cart);
-      return cartRepositoryService.findCartByCartId(cartId);
+      try {
+        cart = cartRepositoryService.findCartByCartId(cartId);
+      } catch (CartNotFoundException e) {
+        throw new UserNotFoundException("User not found");
+      }
+      return cart;
     }
   }
 
@@ -46,17 +51,13 @@ public class CartAndOrderServiceImpl implements CartAndOrderService {
   public CartModifiedResponse addItemToCart(String itemId, String cartId, String restaurantId)
       throws ItemNotFromSameRestaurantException {
     CartModifiedResponse cartModifiedResponse = null;
+    Item item = null;
     try {
-      Item item = menuService.findItem(itemId, restaurantId);
+      item = menuService.findItem(itemId, restaurantId);
       cartModifiedResponse = new CartModifiedResponse(cartRepositoryService.addItem(item, cartId,
           restaurantId), 0);
     } catch (ItemNotFoundInRestaurantMenuException e) {
-      try {
-        cartModifiedResponse =
-            new CartModifiedResponse(cartRepositoryService.findCartByCartId(cartId), 0);
-      } catch (CartNotFoundException e2) {
-        cartModifiedResponse = new CartModifiedResponse(new Cart(), 0);
-      }
+      throw new ItemNotFromSameRestaurantException();
     } catch (CartNotFoundException e) {
       cartModifiedResponse = new CartModifiedResponse(new Cart(), 0);
     }

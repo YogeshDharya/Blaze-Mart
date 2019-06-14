@@ -1,5 +1,7 @@
 package com.crio.qeats.repositoryservices;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.crio.qeats.QEatsApplication;
 import com.crio.qeats.dto.Cart;
 import com.crio.qeats.dto.Item;
@@ -19,8 +21,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(classes = {QEatsApplication.class})
 class CartRepositoryServiceTest {

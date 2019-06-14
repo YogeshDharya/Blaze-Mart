@@ -11,7 +11,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -73,8 +72,8 @@ public class RestaurantEntity {
       return false;
     }
     RestaurantEntity that = (RestaurantEntity) o;
-    return Objects.equals(id, that.id) &&
-        Objects.equals(restaurantId, that.restaurantId);
+    return Objects.equals(id, that.id)
+        && Objects.equals(restaurantId, that.restaurantId);
   }
 
   @Override

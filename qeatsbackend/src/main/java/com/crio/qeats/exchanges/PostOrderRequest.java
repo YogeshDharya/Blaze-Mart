@@ -1,6 +1,5 @@
 package com.crio.qeats.exchanges;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -2,7 +2,8 @@ package com.crio.qeats.exceptions;
 
 public class ItemNotFromSameRestaurantException extends QEatsException {
 
-  public ItemNotFromSameRestaurantException() {}
+  public ItemNotFromSameRestaurantException() {
+  }
 
   public ItemNotFromSameRestaurantException(String message) {
     super(message);

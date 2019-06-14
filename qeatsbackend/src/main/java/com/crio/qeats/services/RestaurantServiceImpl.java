@@ -10,17 +10,16 @@ import com.crio.qeats.dto.Restaurant;
 import com.crio.qeats.exchanges.GetRestaurantsRequest;
 import com.crio.qeats.exchanges.GetRestaurantsResponse;
 import com.crio.qeats.repositoryservices.RestaurantRepositoryService;
-import lombok.extern.log4j.Log4j2;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
 @Service
 @Log4j2
@@ -123,43 +122,39 @@ public class RestaurantServiceImpl implements RestaurantService {
   }
 
   @Async
-  private CompletableFuture<List<Restaurant>> getRestaurantsByItemAttributes(LocalTime currentTime,
-                                                                             Double latitude,
-                                                                             Double longitude,
-                                                                             String searchQuery,
-                                                                             Double finalServingRadiusInKms) {
-    return CompletableFuture.completedFuture(restaurantRepositoryService.findRestaurantsByItemAttributes(latitude, longitude,
-        searchQuery, currentTime, finalServingRadiusInKms));
+  private CompletableFuture<List<Restaurant>> getRestaurantsByItemAttributes(
+      LocalTime currentTime, Double latitude, Double longitude, String searchQuery,
+      Double finalServingRadiusInKms) {
+    return CompletableFuture.completedFuture(restaurantRepositoryService
+        .findRestaurantsByItemAttributes(latitude, longitude, searchQuery, currentTime,
+            finalServingRadiusInKms));
   }
 
   @Async
-  private CompletableFuture<List<Restaurant>> getRestaurantsByItemName(LocalTime currentTime,
-                                                                       Double latitude,
-                                                                       Double longitude,
-                                                                       String searchQuery,
-                                                                       Double finalServingRadiusInKms) {
-    return CompletableFuture.completedFuture(restaurantRepositoryService.findRestaurantsByItemName(latitude, longitude,
-        searchQuery, currentTime, finalServingRadiusInKms));
+  private CompletableFuture<List<Restaurant>> getRestaurantsByItemName(
+      LocalTime currentTime, Double latitude, Double longitude, String searchQuery,
+      Double finalServingRadiusInKms) {
+    return CompletableFuture.completedFuture(restaurantRepositoryService
+        .findRestaurantsByItemName(latitude, longitude, searchQuery, currentTime,
+            finalServingRadiusInKms));
   }
 
   @Async
-  private CompletableFuture<List<Restaurant>> getRestaurantsByAttributes(LocalTime currentTime,
-                                                                         Double latitude,
-                                                                         Double longitude,
-                                                                         String searchQuery,
-                                                                         Double finalServingRadiusInKms) {
-    return CompletableFuture.completedFuture(restaurantRepositoryService.findRestaurantsByAttributes(latitude, longitude,
-        searchQuery, currentTime, finalServingRadiusInKms));
+  private CompletableFuture<List<Restaurant>> getRestaurantsByAttributes(
+      LocalTime currentTime, Double latitude, Double longitude, String searchQuery,
+      Double finalServingRadiusInKms) {
+    return CompletableFuture.completedFuture(restaurantRepositoryService
+        .findRestaurantsByAttributes(latitude, longitude, searchQuery, currentTime,
+            finalServingRadiusInKms));
   }
 
   @Async
-  private CompletableFuture<List<Restaurant>> getRestaurantsByName(LocalTime currentTime,
-                                                                   Double latitude,
-                                                                   Double longitude,
-                                                                   String searchQuery,
-                                                                   Double finalServingRadiusInKms) {
-    return CompletableFuture.completedFuture(restaurantRepositoryService.findRestaurantsByName(latitude, longitude,
-        searchQuery, currentTime, finalServingRadiusInKms));
+  private CompletableFuture<List<Restaurant>> getRestaurantsByName(
+      LocalTime currentTime, Double latitude, Double longitude, String searchQuery,
+      Double finalServingRadiusInKms) {
+    return CompletableFuture.completedFuture(restaurantRepositoryService
+        .findRestaurantsByName(latitude, longitude, searchQuery, currentTime,
+            finalServingRadiusInKms));
   }
 
 

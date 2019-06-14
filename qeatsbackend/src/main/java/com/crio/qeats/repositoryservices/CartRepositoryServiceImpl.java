@@ -11,12 +11,11 @@ import com.crio.qeats.dto.Item;
 import com.crio.qeats.exceptions.CartNotFoundException;
 import com.crio.qeats.models.CartEntity;
 import com.crio.qeats.repositories.CartRepository;
+import java.util.Optional;
 import javax.inject.Provider;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class CartRepositoryServiceImpl implements CartRepositoryService {
@@ -76,7 +75,8 @@ public class CartRepositoryServiceImpl implements CartRepositoryService {
   }
 
   @Override
-  public Cart removeItem(Item item, String cartId, String restaurantId) throws CartNotFoundException {
+  public Cart removeItem(Item item, String cartId, String restaurantId)
+      throws CartNotFoundException {
     ModelMapper mapper = modelMapperProvider.get();
     Optional<CartEntity> cartById = cartRepository.findCartById(cartId);
 

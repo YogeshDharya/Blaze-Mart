@@ -3,14 +3,17 @@ package com.crio.qeats.services;
 import com.crio.qeats.dto.Cart;
 import com.crio.qeats.dto.Item;
 import com.crio.qeats.dto.Order;
-import com.crio.qeats.exceptions.*;
+import com.crio.qeats.exceptions.CartNotFoundException;
+import com.crio.qeats.exceptions.EmptyCartException;
+import com.crio.qeats.exceptions.ItemNotFoundInRestaurantMenuException;
+import com.crio.qeats.exceptions.ItemNotFromSameRestaurantException;
+import com.crio.qeats.exceptions.UserNotFoundException;
 import com.crio.qeats.exchanges.CartModifiedResponse;
 import com.crio.qeats.repositoryservices.CartRepositoryService;
 import com.crio.qeats.repositoryservices.OrderRepositoryService;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class CartAndOrderServiceImpl implements CartAndOrderService {
@@ -40,7 +43,8 @@ public class CartAndOrderServiceImpl implements CartAndOrderService {
   }
 
   @Override
-  public CartModifiedResponse addItemToCart(String itemId, String cartId, String restaurantId) throws ItemNotFromSameRestaurantException {
+  public CartModifiedResponse addItemToCart(String itemId, String cartId, String restaurantId)
+      throws ItemNotFromSameRestaurantException {
     CartModifiedResponse cartModifiedResponse = null;
     try {
       Item item = menuService.findItem(itemId, restaurantId);

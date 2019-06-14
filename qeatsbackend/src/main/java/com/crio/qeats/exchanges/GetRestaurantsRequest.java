@@ -29,7 +29,7 @@ public class GetRestaurantsRequest {
   String searchFor;
 
   public GetRestaurantsRequest(Double latitude, Double longitude, String searchFor) {
-    log.info("GetRestaurantsRequest AllArgs {} " , searchFor);
+    log.info("GetRestaurantsRequest AllArgs {} ", searchFor);
     this.latitude = latitude;
     this.longitude = longitude;
     this.searchFor = searchFor;

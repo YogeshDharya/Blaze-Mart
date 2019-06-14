@@ -201,19 +201,19 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
                                                           LocalTime currentTime,
                                                           Double servingRadiusInKms) {
     // TODO: 6/14/19 Fix the ~15sec overhead of mongodb query here
-//    final String regexAll = String.format(".*%s.*", searchString);
-//    LookupOperation lookupOperation = LookupOperation.newLookup()
-//        .from("menus")
-//        .localField("restaurantId")
-//        .foreignField("restaurantId")
-//        .as("menu");
-//
-//    MatchOperation matchOperation =
-//        match(new Criteria("menu.item.attributes").in(regexAll));
-//
-//    Aggregation aggregation = Aggregation.newAggregation(lookupOperation, matchOperation);
-//    AggregationResults<RestaurantEntity> entityAggregationResults =
-//        mongoTemplate.aggregate(aggregation, "restaurants", RestaurantEntity.class);
+    //    final String regexAll = String.format(".*%s.*", searchString);
+    //    LookupOperation lookupOperation = LookupOperation.newLookup()
+    //        .from("menus")
+    //        .localField("restaurantId")
+    //        .foreignField("restaurantId")
+    //        .as("menu");
+    //
+    //    MatchOperation matchOperation =
+    //        match(new Criteria("menu.item.attributes").in(regexAll));
+    //
+    //    Aggregation aggregation = Aggregation.newAggregation(lookupOperation, matchOperation);
+    //    AggregationResults<RestaurantEntity> entityAggregationResults =
+    //        mongoTemplate.aggregate(aggregation, "restaurants", RestaurantEntity.class);
 
     return new ArrayList<>();
   }

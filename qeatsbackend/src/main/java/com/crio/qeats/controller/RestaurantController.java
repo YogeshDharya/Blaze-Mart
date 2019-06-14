@@ -316,8 +316,8 @@ public class RestaurantController {
       return ResponseEntity.ok(cart);
     } catch (Exception e) {
       return ResponseEntity
-          .ok()
-          .body(new CartModifiedResponse(new Cart(), ITEM_NOT_FROM_SAME_RESTAURANT));
+          .badRequest()
+          .build();
     }
   }
 

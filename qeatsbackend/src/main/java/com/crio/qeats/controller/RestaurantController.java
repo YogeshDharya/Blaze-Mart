@@ -8,28 +8,22 @@ package com.crio.qeats.controller;
 
 import com.crio.qeats.dto.Cart;
 import com.crio.qeats.dto.Order;
-import com.crio.qeats.exchanges.AddCartRequest;
-import com.crio.qeats.exchanges.CartModifiedResponse;
-import com.crio.qeats.exchanges.DeleteCartRequest;
-import com.crio.qeats.exchanges.GetCartRequest;
-import com.crio.qeats.exchanges.GetMenuResponse;
-import com.crio.qeats.exchanges.GetRestaurantsRequest;
-import com.crio.qeats.exchanges.GetRestaurantsResponse;
-import com.crio.qeats.exchanges.PostOrderRequest;
+import com.crio.qeats.exceptions.ItemNotFromSameRestaurantException;
+import com.crio.qeats.exceptions.UserNotFoundException;
+import com.crio.qeats.exchanges.*;
 import com.crio.qeats.services.CartAndOrderService;
 import com.crio.qeats.services.MenuService;
 import com.crio.qeats.services.RestaurantService;
-
-import java.time.LocalTime;
-
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalTime;
+import java.util.Optional;
+
+import static com.crio.qeats.exceptions.QEatsException.ITEM_NOT_FROM_SAME_RESTAURANT;
 
 @RestController
 @Log4j2
@@ -54,7 +48,7 @@ public class RestaurantController {
   @Autowired
   private CartAndOrderService cartAndOrderService;
 
-  // TODO: CRIO_TASK_MODULE_MULTITHREADING - Improve the performance of this GetRestaurants API
+  // COMPLETED: CRIO_TASK_MODULE_MULTITHREADING - Improve the performance of this GetRestaurants API
   //  and keep the functionality same.
   // Get the list of open restaurants near the specified latitude/longitude & matching searchFor.
   // API URI: /qeats/v1/restaurants?latitude=21.93&longitude=23.0&searchFor=tamil
@@ -176,15 +170,19 @@ public class RestaurantController {
   // Eg:
   // curl -X GET "http://localhost:8081/qeats/v1/menu?restaurantId=11"
   @GetMapping(MENU_API)
-  public ResponseEntity<GetMenuResponse> getMenu(
-      @RequestParam("restaurantId") String restaurantId) {
-    if (StringUtils.isEmpty(restaurantId)) {
-      return ResponseEntity.badRequest().body(null);
+  public ResponseEntity<GetMenuResponse> getMenu(@RequestParam("restaurantId") Optional<String> restaurantId) {
+    log.info("getMenu parameter {}", restaurantId);
+    if (!restaurantId.isPresent() || StringUtils.isEmpty(restaurantId.get())) {
+      return ResponseEntity.badRequest().build();
     }
 
-    GetMenuResponse getMenuResponse = menuService.findMenu(restaurantId);
+    GetMenuResponse getMenuResponse = menuService.findMenu(restaurantId.get());
 
     log.info("getMenu returned with {}", getMenuResponse);
+
+    if (getMenuResponse == null || getMenuResponse.getMenu() == null) {
+      return ResponseEntity.badRequest().build();
+    }
 
     return ResponseEntity.ok().body(getMenuResponse);
   }
@@ -224,12 +222,24 @@ public class RestaurantController {
   //          : 5xx, if server side error.
   // Eg:
   // curl -X GET "http://localhost:8081/qeats/v1/cart?userId=arun"
+  @GetMapping(CART_API)
   public ResponseEntity<Cart> getCart(GetCartRequest getCartRequest) {
-    return null;
+    log.info("getCart {}", getCartRequest);
+    if (StringUtils.isEmpty(getCartRequest.getUserId())) {
+      return ResponseEntity.badRequest().build();
+    }
+
+    // If user found then return Cart else BAD_REQUEST
+    try {
+      Cart cart = cartAndOrderService.findOrCreateCart(getCartRequest.getUserId());
+      return ResponseEntity.ok(cart);
+    } catch (UserNotFoundException e) {
+      return ResponseEntity.badRequest().build();
+    }
   }
 
 
-  // TODO: CRIO_TASK_MODULE_MENUAPI: Implement add item to cart
+  // COMPLETED: CRIO_TASK_MODULE_MENUAPI: Implement add item to cart
   // API URI: /qeats/v1/cart/item
   // Method: POST
   // Request Body format:
@@ -272,12 +282,29 @@ public class RestaurantController {
   // HTTP Code: 4xx, if client side error.
   //          : 5xx, if server side error.
   // curl -X GET "http://localhost:8081/qeats/v1/cart/item"
+  @PostMapping(CART_ITEM_API)
   public ResponseEntity<CartModifiedResponse> addItem(AddCartRequest addCartRequest) {
-    return null;
+    log.info("getCart {}", addCartRequest);
+    if (StringUtils.isEmpty(!addCartRequest.isValidRequest())) {
+      return ResponseEntity.badRequest().build();
+    }
+
+    // If user found then return Cart else BAD_REQUEST
+    try {
+      String itemId = addCartRequest.getItemId();
+      String restaurantId = addCartRequest.getRestaurantId();
+      String cartId = addCartRequest.getCartId();
+      CartModifiedResponse cart = cartAndOrderService.addItemToCart(itemId, cartId, restaurantId);
+      return ResponseEntity.ok(cart);
+    } catch (ItemNotFromSameRestaurantException e) {
+      return ResponseEntity
+          .badRequest()
+          .body(new CartModifiedResponse(null, ITEM_NOT_FROM_SAME_RESTAURANT));
+    }
   }
 
 
-  // TODO: CRIO_TASK_MODULE_MENUAPI: Implement remove item from given cartId
+  // COMPLETED: CRIO_TASK_MODULE_MENUAPI: Implement remove item from given cartId
   // API URI: /qeats/v1/cart/item
   // Method: DELETE
   // Request Body format:
@@ -307,8 +334,21 @@ public class RestaurantController {
   // HTTP Code: 4xx, if client side error.
   //          : 5xx, if server side error.
   // curl -X GET "http://localhost:8081/qeats/v1/cart/item"
+  @DeleteMapping(CART_ITEM_API)
   public ResponseEntity<CartModifiedResponse> deleteItem(DeleteCartRequest deleteCartRequest) {
-    return null;
+    log.info("getCart {}", deleteCartRequest);
+    if (StringUtils.isEmpty(!deleteCartRequest.isValidRequest())) {
+      return ResponseEntity.badRequest().build();
+    }
+
+    String itemId = deleteCartRequest.getItemId();
+    String restaurantId = deleteCartRequest.getRestaurantId();
+    String cartId = deleteCartRequest.getCartId();
+
+    CartModifiedResponse response = cartAndOrderService.removeItemFromCart(itemId, cartId,
+        restaurantId);
+
+    return ResponseEntity.ok(response);
   }
 
 

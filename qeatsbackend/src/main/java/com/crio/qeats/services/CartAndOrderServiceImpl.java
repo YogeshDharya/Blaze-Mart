@@ -1,14 +1,16 @@
 package com.crio.qeats.services;
 
 import com.crio.qeats.dto.Cart;
+import com.crio.qeats.dto.Item;
 import com.crio.qeats.dto.Order;
-import com.crio.qeats.exceptions.EmptyCartException;
-import com.crio.qeats.exceptions.ItemNotFromSameRestaurantException;
+import com.crio.qeats.exceptions.*;
 import com.crio.qeats.exchanges.CartModifiedResponse;
 import com.crio.qeats.repositoryservices.CartRepositoryService;
 import com.crio.qeats.repositoryservices.OrderRepositoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class CartAndOrderServiceImpl implements CartAndOrderService {
@@ -24,18 +26,54 @@ public class CartAndOrderServiceImpl implements CartAndOrderService {
 
   @Override
   public Cart findOrCreateCart(String userId) {
-    return null;
+    Optional<Cart> cartByUserId = cartRepositoryService.findCartByUserId(userId);
+
+    if (cartByUserId.isPresent()) {
+      return cartByUserId.get();
+    }
+
+    throw new UserNotFoundException(String.format("User with id %s not found", userId));
   }
 
   @Override
   public CartModifiedResponse addItemToCart(String itemId, String cartId, String restaurantId) throws ItemNotFromSameRestaurantException {
-    return null;
+    CartModifiedResponse cartModifiedResponse = null;
+    try {
+      Item item = menuService.findItem(itemId, restaurantId);
+      cartModifiedResponse = new CartModifiedResponse(cartRepositoryService.addItem(item, cartId,
+          restaurantId), 0);
+    } catch (ItemNotFoundInRestaurantMenuException e) {
+      try {
+        cartModifiedResponse =
+            new CartModifiedResponse(cartRepositoryService.findCartByCartId(cartId), 0);
+      } catch (CartNotFoundException e2) {
+        cartModifiedResponse = new CartModifiedResponse(new Cart(), 0);
+      }
+    } catch (CartNotFoundException e) {
+      cartModifiedResponse = new CartModifiedResponse(new Cart(), 0);
+    }
+    return cartModifiedResponse;
   }
 
   @Override
   public CartModifiedResponse removeItemFromCart(String itemId, String cartId,
                                                  String restaurantId) {
-    return null;
+    CartModifiedResponse cartModifiedResponse;
+    try {
+      Item item = menuService.findItem(itemId, restaurantId);
+      cartModifiedResponse = new CartModifiedResponse(cartRepositoryService.removeItem(item, cartId,
+          restaurantId), 0);
+    } catch (ItemNotFoundInRestaurantMenuException e) {
+      try {
+        cartModifiedResponse =
+            new CartModifiedResponse(cartRepositoryService.findCartByCartId(cartId), 0);
+      } catch (CartNotFoundException e2) {
+        cartModifiedResponse = new CartModifiedResponse(new Cart(), 0);
+      }
+    } catch (CartNotFoundException e) {
+      cartModifiedResponse = new CartModifiedResponse(new Cart(), 0);
+    }
+    return cartModifiedResponse;
   }
 
   @Override

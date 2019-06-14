@@ -30,9 +30,11 @@ public class MenuServiceImpl implements MenuService {
       throws ItemNotFoundInRestaurantMenuException {
     Menu menu = menuRepositoryService.findMenu(restaurantId);
 
-    for (Item item : menu.getItems()) {
-      if (itemId.equals(item.getItemId())) {
-        return item;
+    if (menu != null) {
+      for (Item item : menu.getItems()) {
+        if (itemId.equals(item.getItemId())) {
+          return item;
+        }
       }
     }
 

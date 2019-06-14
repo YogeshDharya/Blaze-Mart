@@ -24,14 +24,14 @@ public interface CartRepositoryService {
   @NonNull String createCart(Cart cart);
 
   /**
-   * TODO: CRIO_TASK_MODULE_MENUAPI - Find and return the cart for the corresponding userId.
+   * COMPLETED: CRIO_TASK_MODULE_MENUAPI - Find and return the cart for the corresponding userId.
    * @param userId - userId
    * @return return Cart - cart corresponding to user id.
    */
   Optional<Cart> findCartByUserId(String userId);
 
   /**
-   * TODO: CRIO_TASK_MODULE_MENUAPI - Find and return the cart for the given cartId.
+   * COMPLETED: CRIO_TASK_MODULE_MENUAPI - Find and return the cart for the given cartId.
    * @param cartId - id of the cart to be found
    * @return Cart - cart corresponding to the given cartId
    * @throws CartNotFoundException - if cartId is invalid
@@ -39,7 +39,7 @@ public interface CartRepositoryService {
   Cart findCartByCartId(String cartId) throws CartNotFoundException;
 
   /**
-   * TODO: CRIO_TASK_MODULE_MENUAPI - Add the given item to cart with the given cartId.
+   * COMPLETED: CRIO_TASK_MODULE_MENUAPI - Add the given item to cart with the given cartId.
    * @param item - item to be added
    * @param cartId - if of the cart
    * @param restaurantId - restaurant id of the the item
@@ -49,7 +49,7 @@ public interface CartRepositoryService {
   Cart addItem(Item item, String cartId, String restaurantId) throws CartNotFoundException;
 
   /**
-   * TODO: CRIO_TASK_MODULE_MENUAPI - Remove the given item from cart with the given cartId.
+   * COMPLETED: CRIO_TASK_MODULE_MENUAPI - Remove the given item from cart with the given cartId.
    * @param item - item to be removed
    * @param cartId - id of the cart
    * @param restaurantId - restaurant id of the item

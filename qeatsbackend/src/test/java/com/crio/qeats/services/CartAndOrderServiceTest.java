@@ -1,9 +1,8 @@
 package com.crio.qeats.services;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -210,8 +209,7 @@ class CartAndOrderServiceTest {
   }
 
 
-    // assertEquals(cartIdCapture.getValue(), cart.getRestaurantId());
-
+  // assertEquals(cartIdCapture.getValue(), cart.getRestaurantId());
 
 
   private Item loadSampleItem() throws IOException {

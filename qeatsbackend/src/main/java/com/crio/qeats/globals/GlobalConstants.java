@@ -1,7 +1,6 @@
 package com.crio.qeats.globals;
 
 import lombok.Getter;
-import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.exceptions.JedisConnectionException;
@@ -18,6 +17,11 @@ public class GlobalConstants {
 
   // Amount of time after which the redis entries should expire.
   public static final int REDIS_ENTRY_EXPIRY_IN_SECONDS = 3600;
+
+  // TIP(MODULE_RABBITMQ): RabbitMQ related configs.
+  public static final String EXCHANGE_NAME = "rabbitmq-exchange";
+  public static final String QUEUE_NAME = "rabbitmq-queue";
+  public static final String ROUTING_KEY = "qeats.postorder";
 
   @Getter
   private static JedisPool jedisPool;

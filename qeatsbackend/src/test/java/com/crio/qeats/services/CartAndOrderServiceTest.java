@@ -1,7 +1,9 @@
 package com.crio.qeats.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -26,6 +28,8 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -46,6 +50,9 @@ class CartAndOrderServiceTest {
 
   @MockBean
   private MenuService menuService;
+
+  @MockBean
+  private RabbitTemplate rabbitTemplate;
 
   private ObjectMapper objectMapper;
 
@@ -175,9 +182,36 @@ class CartAndOrderServiceTest {
     assertEquals(cart.toString(), cartArgumentCaptor.getValue().toString());
     // ArgumentCaptor<String> cartIdCapture = ArgumentCaptor.forClass(String.class);
     // verify(cartRepositoryService, times(1)).clear(cartIdCapture.capture());
-
     // assertEquals(cartIdCapture.getValue(), cart.getRestaurantId());
   }
+
+  @Test
+  void placeOrderTestPostOrderFlow() throws IOException {
+    Cart cart = loadSampleCart();
+    Order placedOrder = new Order();
+
+    when(cartRepositoryService.findCartByCartId(any(String.class))).thenReturn(cart);
+    when(orderRepositoryService.placeOrder(cart)).thenReturn(placedOrder);
+    doNothing().when(rabbitTemplate)
+        .send(any(String.class), any(String.class), any(Message.class));
+
+    cartAndOrderService.postOrder(cart.getId());
+
+    ArgumentCaptor<Cart> cartArgumentCaptor = ArgumentCaptor.forClass(Cart.class);
+    verify(orderRepositoryService, times(1))
+        .placeOrder(cartArgumentCaptor.capture());
+    verify(rabbitTemplate, times(1))
+        .send(any(String.class), any(String.class), any(Message.class));
+
+    assertEquals(cart.toString(), cartArgumentCaptor.getValue().toString());
+    // ArgumentCaptor<String> cartIdCapture = ArgumentCaptor.forClass(String.class);
+    // verify(cartRepositoryService, times(1)) .clear(cartIdCapture.capture());
+    // assertEquals(cartIdCapture.getValue(), cart.getId());
+  }
+
+
+    // assertEquals(cartIdCapture.getValue(), cart.getRestaurantId());
+
 
 
   private Item loadSampleItem() throws IOException {

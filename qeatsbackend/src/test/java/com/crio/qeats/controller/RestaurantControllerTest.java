@@ -61,7 +61,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 // COMPLETED: CRIO_TASK_MODULE_RESTAURANTSAPI - Pass all the RestaurantController test cases.
 
-// TODO: CRIO_TASK_MODULE_RESTAURANTSAPI - Pass all the RestaurantController test cases.
 // Make modifications to the tests if necessary.
 // Test RestaurantController by mocking RestaurantService.
 @SpringBootTest(classes = {QEatsApplication.class})

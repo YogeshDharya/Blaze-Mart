@@ -179,7 +179,7 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
         servingRadiusInKms);
   }
 
-  // TODO: CRIO_TASK_MODULE_RESTAURANTSEARCH
+  // COMPLETED: CRIO_TASK_MODULE_RESTAURANTSEARCH
   // Objective:
   // Find restaurants which serve food items whose names form a complete or partial match
   // with the search query.

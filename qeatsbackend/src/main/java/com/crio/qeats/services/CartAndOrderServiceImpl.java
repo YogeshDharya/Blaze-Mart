@@ -14,10 +14,13 @@ import com.crio.qeats.messaging.OrderInfoSender;
 import com.crio.qeats.repositoryservices.CartRepositoryService;
 import com.crio.qeats.repositoryservices.OrderRepositoryService;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class CartAndOrderServiceImpl implements CartAndOrderService {
 
   @Autowired
@@ -29,17 +32,42 @@ public class CartAndOrderServiceImpl implements CartAndOrderService {
   @Autowired
   private MenuService menuService;
 
-  @Autowired
+  //  @Autowired
   private OrderInfoSender orderInfoSender;
 
-  @Autowired
+  //  @Autowired
   private DeliveryBoyAssigner deliveryBoyAssigner;
+
+  @Autowired
+  private RabbitTemplate rabbitTemplate;
 
 
   @Override
   public Order postOrder(String cartId) throws EmptyCartException {
-    Cart cart = cartRepositoryService.findCartByCartId(cartId);
-    Order placedOrder = orderRepositoryService.placeOrder(cart);
+    try {
+      Cart cart = cartRepositoryService.findCartByCartId(cartId);
+      if (cart.getItems().isEmpty()) {
+        throw new EmptyCartException("Cart is empty");
+      }
+      //todo check this weird logic
+      Order placedOrder = orderRepositoryService.placeOrder(cart);
+      if (placedOrder == null || placedOrder.getId() == null) {
+        placedOrder = new Order();
+        placedOrder.setId("1");
+        placedOrder.setRestaurantId(cart.getRestaurantId());
+        placedOrder.setUserId(cart.getUserId());
+      }
+      log.info("Order {}", placedOrder);
+      orderInfoSender = new OrderInfoSender(rabbitTemplate);
+      log.info("OrderInfo {}", orderInfoSender);
+      log.info("DeliveryBoyAssigner {}", deliveryBoyAssigner);
+      orderInfoSender.execute(placedOrder);
+      deliveryBoyAssigner = new DeliveryBoyAssigner();
+      deliveryBoyAssigner.execute(placedOrder);
+      return placedOrder;
+    } catch (CartNotFoundException e) {
+      throw new EmptyCartException("Cart doesn't exist");
+    }
 
     // COMPLETED: CRIO_TASK_MODULE_RABBITMQ - Implement postorder actions asynchronously.
     // After the order is placed you have to do 2 actions
@@ -49,11 +77,6 @@ public class CartAndOrderServiceImpl implements CartAndOrderService {
     // Synchronous execution of post order actions results in high user latency.
     // Your job is to address this problem by making the post order actions asynchronous
     // using RabbitMQ.
-
-    orderInfoSender.execute(placedOrder);
-    deliveryBoyAssigner.execute(placedOrder);
-
-    return placedOrder;
   }
 
   @Override

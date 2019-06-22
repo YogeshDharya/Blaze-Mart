@@ -1,16 +1,24 @@
 package com.crio.qeats.config;
 
 import com.crio.qeats.globals.GlobalConstants;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@Slf4j
 public class RabbitConfiguration {
 
   // COMPLETED: CRIO_TASK_MODULE_RABBITMQ - Setup RabbitMQ configuration.
@@ -28,7 +36,7 @@ public class RabbitConfiguration {
 
   @Bean
   public Queue defaultParsingQueue() {
-    return new Queue(GlobalConstants.QUEUE_NAME);
+    return new Queue(GlobalConstants.QUEUE_NAME, true);
   }
 
   @Bean
@@ -38,7 +46,28 @@ public class RabbitConfiguration {
   }
 
   @Bean
+  public Jackson2JsonMessageConverter producerMessageConverter(){
+    return new Jackson2JsonMessageConverter();
+  }
+
+//  @Bean
+//  public ConnectionFactory connectionFactory() {
+//    CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
+//    connectionFactory.setHost("localhost");
+//    connectionFactory.setPort(15672);
+//    connectionFactory.setUsername("guest");
+//    connectionFactory.setPassword("guest");
+//    return connectionFactory;
+//  }
+
+  @Bean
   public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
-    return new RabbitTemplate(connectionFactory);
+    RabbitTemplate rabbitTemplate = new RabbitTemplate();
+    rabbitTemplate.setExchange(GlobalConstants.EXCHANGE_NAME);
+    rabbitTemplate.setRoutingKey(GlobalConstants.ROUTING_KEY);
+    rabbitTemplate.setMessageConverter(producerMessageConverter());
+    rabbitTemplate.setConnectionFactory(connectionFactory);
+    log.info("rabbitTemplate() called {}", rabbitTemplate);
+    return rabbitTemplate;
   }
 }

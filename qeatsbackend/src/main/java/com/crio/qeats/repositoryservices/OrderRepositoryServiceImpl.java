@@ -14,11 +14,13 @@ import com.crio.qeats.repositories.CartRepository;
 import com.crio.qeats.repositories.OrderRepository;
 import java.time.LocalTime;
 import javax.inject.Provider;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class OrderRepositoryServiceImpl implements OrderRepositoryService {
 
   @Autowired
@@ -33,9 +35,13 @@ public class OrderRepositoryServiceImpl implements OrderRepositoryService {
   @Override
   public Order placeOrder(Cart cart) {
     ModelMapper mapper = modelMapperProvider.get();
-    OrderEntity orderEntity = mapper.map(cart, OrderEntity.class);
+    OrderEntity orderEntity = new OrderEntity();
+    orderEntity.setRestaurantId(cart.getRestaurantId());
+    orderEntity.setUserId(cart.getUserId());
+    orderEntity.setTotal(cart.getTotal());
     orderEntity.setPlacedTime(LocalTime.now().toString());
-    Order order = mapper.map(orderRepository.insert(orderEntity), Order.class);
+    log.info("Order Entity {}", orderEntity);
+    Order order = mapper.map(orderRepository.save(orderEntity), Order.class);
     CartEntity cartEntity = mapper.map(cart, CartEntity.class);
     cartEntity.clearCart();
     cartRepository.save(cartEntity);

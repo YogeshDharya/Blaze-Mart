@@ -2,6 +2,7 @@ package com.crio.qeats.messaging;
 
 import com.crio.qeats.dto.Order;
 import com.crio.qeats.globals.GlobalConstants;
+import java.nio.charset.Charset;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
@@ -24,7 +25,7 @@ public class OrderInfoSender implements PostOrderActions {
   @Override
   public void execute(Order order) {
     log.info("Sending Order Information for Order id " + order.getId());
-    Message message = MessageBuilder.withBody("foo".getBytes())
+    Message message = MessageBuilder.withBody("foo".getBytes(Charset.forName("UTF-8")))
         .setContentType(MessageProperties.CONTENT_TYPE_TEXT_PLAIN)
         .setMessageId(order.getId())
         .setHeader("bar", "baz")

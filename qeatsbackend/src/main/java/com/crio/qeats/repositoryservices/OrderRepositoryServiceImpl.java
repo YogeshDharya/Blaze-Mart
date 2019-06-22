@@ -34,7 +34,7 @@ public class OrderRepositoryServiceImpl implements OrderRepositoryService {
 
   @Override
   public Order placeOrder(Cart cart) {
-    ModelMapper mapper = modelMapperProvider.get();
+    final ModelMapper mapper = modelMapperProvider.get();
     OrderEntity orderEntity = new OrderEntity();
     orderEntity.setRestaurantId(cart.getRestaurantId());
     orderEntity.setUserId(cart.getUserId());

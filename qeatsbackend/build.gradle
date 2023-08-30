@@ -65,7 +65,6 @@ dependencies {
         exclude group: "junit", module: "junit"
     }
 
-    testImplementation "de.flapdoodle.embed:de.flapdoodle.embed.mongo"
     testImplementation("org.junit.jupiter:junit-jupiter-api:$rootProject.ext.junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$rootProject.ext.junitVersion")
     testImplementation("org.junit.platform:junit-platform-launcher" +

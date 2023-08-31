@@ -1,6 +1,7 @@
 # COMPLETED: CRIO_TASK_MODULE_DEPLOYMENT: Create the Dockerfile so that you can deploy your Spring Boot
 # application easily.
-FROM openjdk:8-jdk-alpine
+FROM eclipse-temurin:11-jdk-focal
+
 VOLUME /tmp
 ADD /qeatsbackend/build/libs/qeatsbackend.jar app.jar
 #RUN bash -c 'touch /app.jar'

@@ -1,1 +1,1 @@
-# QEats
+# Blaze Mart

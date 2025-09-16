@@ -4,9 +4,9 @@
  *
  */
 
-package com.crio.qeats.repositories;
+package com.crio.blazemart.repositories;
 
-import com.crio.qeats.models.RestaurantEntity;
+import com.crio.blazemart.models.RestaurantEntity;
 import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;

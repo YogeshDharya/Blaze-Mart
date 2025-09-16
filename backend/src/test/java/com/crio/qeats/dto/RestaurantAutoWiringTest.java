@@ -1,6 +1,6 @@
-package com.crio.qeats.dto;
+package com.crio.blazemart.dto;
 
-import com.crio.qeats.dto.config.ObjectMapperBeanConfig;
+import com.crio.blazemart.dto.config.ObjectMapperBeanConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import org.json.JSONException;

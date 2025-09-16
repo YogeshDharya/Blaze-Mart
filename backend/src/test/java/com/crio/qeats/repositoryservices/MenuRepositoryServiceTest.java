@@ -4,15 +4,15 @@
  *
  */
 
-package com.crio.qeats.repositoryservices;
+package com.crio.blazemart.repositoryservices;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.crio.qeats.QEatsApplication;
-import com.crio.qeats.dto.Menu;
-import com.crio.qeats.models.MenuEntity;
-import com.crio.qeats.utils.FixtureHelpers;
+import com.crio.blazemart.blazemartApplication;
+import com.crio.blazemart.dto.Menu;
+import com.crio.blazemart.models.MenuEntity;
+import com.crio.blazemart.utils.FixtureHelpers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-@SpringBootTest(classes = {QEatsApplication.class})
+@SpringBootTest(classes = {blazemartApplication.class})
 class MenuRepositoryServiceTest {
 
   private static final String FIXTURES = "fixtures/exchanges";

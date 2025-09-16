@@ -1,12 +1,12 @@
-package com.crio.qeats.repositoryservices;
+package com.crio.blazemart.repositoryservices;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.crio.qeats.QEatsApplication;
-import com.crio.qeats.dto.Cart;
-import com.crio.qeats.dto.Item;
-import com.crio.qeats.models.CartEntity;
-import com.crio.qeats.utils.FixtureHelpers;
+import com.crio.blazemart.blazemartApplication;
+import com.crio.blazemart.dto.Cart;
+import com.crio.blazemart.dto.Item;
+import com.crio.blazemart.models.CartEntity;
+import com.crio.blazemart.utils.FixtureHelpers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-@SpringBootTest(classes = {QEatsApplication.class})
+@SpringBootTest(classes = {blazemartApplication.class})
 class CartRepositoryServiceTest {
 
   private static final String FIXTURES = "fixtures/exchanges";

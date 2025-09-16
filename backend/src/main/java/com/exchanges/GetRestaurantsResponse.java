@@ -4,9 +4,9 @@
  *
  */
 
-package com.crio.qeats.exchanges;
+package com.crio.blazemart.exchanges;
 
-import com.crio.qeats.dto.Restaurant;
+import com.crio.blazemart.dto.Restaurant;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;

@@ -4,7 +4,7 @@
  *
  */
 
-package com.crio.qeats.utils;
+package com.crio.blazemart.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

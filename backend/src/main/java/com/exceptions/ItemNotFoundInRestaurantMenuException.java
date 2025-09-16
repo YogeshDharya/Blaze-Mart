@@ -1,6 +1,6 @@
 package com.exceptions;
 
-public class ItemNotFoundInRestaurantMenuException extends QEatsException {
+public class ItemNotFoundInRestaurantMenuException extends blazemartException {
 
   public ItemNotFoundInRestaurantMenuException(String message) {
     super(message);

@@ -1,6 +1,6 @@
 package com.models;
 
-import com.crio.qeats.dto.Item;
+import com.crio.blazemart.dto.Item;
 
 import java.util.ArrayList;
 import java.util.List;

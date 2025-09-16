@@ -4,7 +4,7 @@
  *
  */
 
-package com.crio.qeats.services;
+package com.crio.blazemart.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -13,12 +13,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.crio.qeats.QEatsApplication;
-import com.crio.qeats.dto.Restaurant;
-import com.crio.qeats.exchanges.GetRestaurantsRequest;
-import com.crio.qeats.exchanges.GetRestaurantsResponse;
-import com.crio.qeats.repositoryservices.RestaurantRepositoryService;
-import com.crio.qeats.utils.FixtureHelpers;
+import com.crio.blazemart.blazemartApplication;
+import com.crio.blazemart.dto.Restaurant;
+import com.crio.blazemart.exchanges.GetRestaurantsRequest;
+import com.crio.blazemart.exchanges.GetRestaurantsResponse;
+import com.crio.blazemart.repositoryservices.RestaurantRepositoryService;
+import com.crio.blazemart.utils.FixtureHelpers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -42,7 +42,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 // 1. Make modifications to the tests if necessary so that all test cases pass
 // 2. Test RestaurantService Api by mocking RestaurantRepositoryService.
 
-@SpringBootTest(classes = {QEatsApplication.class})
+@SpringBootTest(classes = {blazemartApplication.class})
 @MockitoSettings(strictness = Strictness.STRICT_STUBS)
 class RestaurantServiceTest {
 

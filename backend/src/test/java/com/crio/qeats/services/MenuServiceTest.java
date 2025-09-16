@@ -4,7 +4,7 @@
  *
  */
 
-package com.crio.qeats.services;
+package com.crio.blazemart.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -14,13 +14,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.crio.qeats.QEatsApplication;
-import com.crio.qeats.dto.Item;
-import com.crio.qeats.dto.Menu;
-import com.crio.qeats.exceptions.ItemNotFoundInRestaurantMenuException;
-import com.crio.qeats.exchanges.GetMenuResponse;
-import com.crio.qeats.repositoryservices.MenuRepositoryService;
-import com.crio.qeats.utils.FixtureHelpers;
+import com.crio.blazemart.blazemartApplication;
+import com.crio.blazemart.dto.Item;
+import com.crio.blazemart.dto.Menu;
+import com.crio.blazemart.exceptions.ItemNotFoundInRestaurantMenuException;
+import com.crio.blazemart.exchanges.GetMenuResponse;
+import com.crio.blazemart.repositoryservices.MenuRepositoryService;
+import com.crio.blazemart.utils.FixtureHelpers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +33,7 @@ import org.mockito.quality.Strictness;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-@SpringBootTest(classes = {QEatsApplication.class})
+@SpringBootTest(classes = {blazemartApplication.class})
 @MockitoSettings(strictness = Strictness.STRICT_STUBS)
 class MenuServiceTest {
 

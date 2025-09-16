@@ -1,4 +1,4 @@
-package com.crio.qeats.services;
+package com.crio.blazemart.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -8,13 +8,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.crio.qeats.QEatsApplication;
-import com.crio.qeats.dto.Cart;
-import com.crio.qeats.dto.Item;
-import com.crio.qeats.dto.Order;
-import com.crio.qeats.repositoryservices.CartRepositoryService;
-import com.crio.qeats.repositoryservices.OrderRepositoryService;
-import com.crio.qeats.utils.FixtureHelpers;
+import com.crio.blazemart.blazemartApplication;
+import com.crio.blazemart.dto.Cart;
+import com.crio.blazemart.dto.Item;
+import com.crio.blazemart.dto.Order;
+import com.crio.blazemart.repositoryservices.CartRepositoryService;
+import com.crio.blazemart.repositoryservices.OrderRepositoryService;
+import com.crio.blazemart.utils.FixtureHelpers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -32,7 +32,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-@SpringBootTest(classes = {QEatsApplication.class})
+@SpringBootTest(classes = {blazemartApplication.class})
 @MockitoSettings(strictness = Strictness.STRICT_STUBS)
 class CartAndOrderServiceTest {
 

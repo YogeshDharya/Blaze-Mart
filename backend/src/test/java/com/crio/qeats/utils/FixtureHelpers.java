@@ -4,7 +4,7 @@
  *
  */
 
-package com.crio.qeats.utils;
+package com.crio.blazemart.utils;
 
 import com.google.common.io.Resources;
 import java.io.IOException;

@@ -1,6 +1,6 @@
 package com.config;
 
-import com.crio.qeats.globals.GlobalConstants;
+import com.crio.blazemart.globals.GlobalConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

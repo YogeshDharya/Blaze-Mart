@@ -1,19 +1,19 @@
 package com.controller;
 
-import com.crio.qeats.dto.Cart;
-import com.crio.qeats.dto.Order;
-import com.crio.qeats.exceptions.EmptyCartException;
-import com.crio.qeats.exchanges.AddCartRequest;
-import com.crio.qeats.exchanges.CartModifiedResponse;
-import com.crio.qeats.exchanges.DeleteCartRequest;
-import com.crio.qeats.exchanges.GetCartRequest;
-import com.crio.qeats.exchanges.GetMenuResponse;
-import com.crio.qeats.exchanges.GetRestaurantsRequest;
-import com.crio.qeats.exchanges.GetRestaurantsResponse;
-import com.crio.qeats.exchanges.PostOrderRequest;
-import com.crio.qeats.services.CartAndOrderService;
-import com.crio.qeats.services.MenuService;
-import com.crio.qeats.services.RestaurantService;
+import com.crio.blazemart.dto.Cart;
+import com.crio.blazemart.dto.Order;
+import com.crio.blazemart.exceptions.EmptyCartException;
+import com.crio.blazemart.exchanges.AddCartRequest;
+import com.crio.blazemart.exchanges.CartModifiedResponse;
+import com.crio.blazemart.exchanges.DeleteCartRequest;
+import com.crio.blazemart.exchanges.GetCartRequest;
+import com.crio.blazemart.exchanges.GetMenuResponse;
+import com.crio.blazemart.exchanges.GetRestaurantsRequest;
+import com.crio.blazemart.exchanges.GetRestaurantsResponse;
+import com.crio.blazemart.exchanges.PostOrderRequest;
+import com.crio.blazemart.services.CartAndOrderService;
+import com.crio.blazemart.services.MenuService;
+import com.crio.blazemart.services.RestaurantService;
 import java.time.LocalTime;
 import java.util.Optional;
 import lombok.extern.log4j.Log4j2;
@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(RestaurantController.RESTAURANT_API_ENDPOINT)
 public class RestaurantController {
 
-  public static final String RESTAURANT_API_ENDPOINT = "/qeats/v1";
+  public static final String RESTAURANT_API_ENDPOINT = "/blazemart/v1";
   public static final String RESTAURANTS_API = "/restaurants";
   public static final String MENU_API = "/menu";
   public static final String CART_API = "/cart";

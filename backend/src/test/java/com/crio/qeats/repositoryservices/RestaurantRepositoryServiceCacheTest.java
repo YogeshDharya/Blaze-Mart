@@ -1,4 +1,4 @@
-package com.crio.qeats.repositoryservices;
+package com.crio.blazemart.repositoryservices;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -7,12 +7,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.hsr.geohash.GeoHash;
-import com.crio.qeats.QEatsApplication;
-import com.crio.qeats.dto.Restaurant;
-import com.crio.qeats.globals.GlobalConstants;
-import com.crio.qeats.models.RestaurantEntity;
-import com.crio.qeats.repositories.RestaurantRepository;
-import com.crio.qeats.utils.FixtureHelpers;
+import com.crio.blazemart.blazemartApplication;
+import com.crio.blazemart.dto.Restaurant;
+import com.crio.blazemart.globals.GlobalConstants;
+import com.crio.blazemart.models.RestaurantEntity;
+import com.crio.blazemart.repositories.RestaurantRepository;
+import com.crio.blazemart.utils.FixtureHelpers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -32,7 +32,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import redis.clients.jedis.Jedis;
 
-@SpringBootTest(classes = {QEatsApplication.class})
+@SpringBootTest(classes = {blazemartApplication.class})
 class RestaurantRepositoryServiceCacheTest {
 
   private static final String FIXTURES = "fixtures/exchanges";

@@ -1,6 +1,6 @@
 package com.exchanges;
 
-import com.crio.qeats.dto.Menu;
+import com.crio.blazemart.dto.Menu;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;

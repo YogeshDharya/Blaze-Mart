@@ -1,4 +1,4 @@
-package com.crio.qeats.dto.config;
+package com.crio.blazemart.dto.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

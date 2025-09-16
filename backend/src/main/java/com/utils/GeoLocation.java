@@ -1,4 +1,4 @@
-package com.crio.qeats.utils;
+package com.crio.blazemart.utils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

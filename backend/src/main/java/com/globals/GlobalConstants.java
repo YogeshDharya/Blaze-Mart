@@ -15,7 +15,7 @@ public class GlobalConstants {
 
   public static final String EXCHANGE_NAME = "rabbitmq-exchange";
   public static final String QUEUE_NAME = "rabbitmq-queue";
-  public static final String ROUTING_KEY = "qeats.postorder";
+  public static final String ROUTING_KEY = "blazemart.postorder";
 
   @Getter
   private static JedisPool jedisPool;

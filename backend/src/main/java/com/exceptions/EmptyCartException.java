@@ -1,6 +1,6 @@
 package com.exceptions;
 
-public class EmptyCartException extends QEatsException {
+public class EmptyCartException extends blazemartException {
 
   public EmptyCartException(String message) {
     super(message);

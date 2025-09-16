@@ -8,10 +8,10 @@ public abstract class BlazeMart extends RuntimeException {
   static final int CART_NOT_FOUND = 103;
   static final int USER_NOT_FOUND = 104;
 
-  QEatsException() {
+  blazemartException() {
   }
 
-  QEatsException(String message) {
+  blazemartException(String message) {
     super(message);
   }
 

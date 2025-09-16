@@ -1,12 +1,12 @@
 version: '3.8'
 
 services:
-  qeats:
+  blazemart:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: app
-    image: 'abhishekchd/qeats:latest'
+    image: 'abhishekchd/blazemart:latest'
     ports:
       - "8080:8081"
     expose:

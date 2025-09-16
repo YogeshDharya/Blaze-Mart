@@ -4,7 +4,7 @@
  *
  */
 
-package com.crio.qeats.dto;
+package com.crio.blazemart.dto;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.crio.qeats;
+package com.crio.blazemart;
 
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -9,11 +9,11 @@ import org.springframework.context.annotation.Scope;
 
 @SpringBootApplication
 @Log4j2
-public class QEatsApplication {
+public class blazemartApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(QEatsApplication.class, args);
-    log.info("Congrats! Your QEatsApplication server has started");
+    SpringApplication.run(blazemartApplication.class, args);
+    log.info("Congrats! Your blazemartApplication server has started");
   }
 
   /**

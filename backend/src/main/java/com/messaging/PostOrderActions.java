@@ -1,6 +1,6 @@
 package com.messaging;
 
-import com.crio.qeats.dto.Order;
+import com.crio.blazemart.dto.Order;
 
 public interface PostOrderActions {
   void execute(Order order);

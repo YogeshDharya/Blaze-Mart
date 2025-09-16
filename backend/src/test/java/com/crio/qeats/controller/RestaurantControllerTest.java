@@ -4,16 +4,16 @@
  *
  */
 
-package com.crio.qeats.controller;
+package com.crio.blazemart.controller;
 
-import static com.crio.qeats.controller.RestaurantController.CART_API;
-import static com.crio.qeats.controller.RestaurantController.CART_CLEAR_API;
-import static com.crio.qeats.controller.RestaurantController.CART_ITEM_API;
-import static com.crio.qeats.controller.RestaurantController.GET_ORDERS_API;
-import static com.crio.qeats.controller.RestaurantController.MENU_API;
-import static com.crio.qeats.controller.RestaurantController.POST_ORDER_API;
-import static com.crio.qeats.controller.RestaurantController.RESTAURANTS_API;
-import static com.crio.qeats.controller.RestaurantController.RESTAURANT_API_ENDPOINT;
+import static com.crio.blazemart.controller.RestaurantController.CART_API;
+import static com.crio.blazemart.controller.RestaurantController.CART_CLEAR_API;
+import static com.crio.blazemart.controller.RestaurantController.CART_ITEM_API;
+import static com.crio.blazemart.controller.RestaurantController.GET_ORDERS_API;
+import static com.crio.blazemart.controller.RestaurantController.MENU_API;
+import static com.crio.blazemart.controller.RestaurantController.POST_ORDER_API;
+import static com.crio.blazemart.controller.RestaurantController.RESTAURANTS_API;
+import static com.crio.blazemart.controller.RestaurantController.RESTAURANT_API_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -26,16 +26,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.crio.qeats.QEatsApplication;
-import com.crio.qeats.dto.Cart;
-import com.crio.qeats.dto.Order;
-import com.crio.qeats.exchanges.GetMenuResponse;
-import com.crio.qeats.exchanges.GetRestaurantsRequest;
-import com.crio.qeats.exchanges.GetRestaurantsResponse;
-import com.crio.qeats.services.CartAndOrderService;
-import com.crio.qeats.services.MenuService;
-import com.crio.qeats.services.RestaurantService;
-import com.crio.qeats.utils.FixtureHelpers;
+import com.crio.blazemart.blazemartApplication;
+import com.crio.blazemart.dto.Cart;
+import com.crio.blazemart.dto.Order;
+import com.crio.blazemart.exchanges.GetMenuResponse;
+import com.crio.blazemart.exchanges.GetRestaurantsRequest;
+import com.crio.blazemart.exchanges.GetRestaurantsResponse;
+import com.crio.blazemart.services.CartAndOrderService;
+import com.crio.blazemart.services.MenuService;
+import com.crio.blazemart.services.RestaurantService;
+import com.crio.blazemart.utils.FixtureHelpers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -63,7 +63,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 // Make modifications to the tests if necessary.
 // Test RestaurantController by mocking RestaurantService.
-@SpringBootTest(classes = {QEatsApplication.class})
+@SpringBootTest(classes = {blazemartApplication.class})
 @MockitoSettings(strictness = Strictness.STRICT_STUBS)
 @AutoConfigureMockMvc
 public class RestaurantControllerTest {
@@ -446,7 +446,7 @@ public class RestaurantControllerTest {
         .fromPath(ADD_REMOVE_CART_API_URI)
         .build().toUri();
 
-    assertEquals("/qeats/v1/cart/item", uri.toString());
+    assertEquals("/blazemart/v1/cart/item", uri.toString());
 
     String addCartItemBody = loadJsonBody("cart_add_or_remove_item_body.json");
 
@@ -473,7 +473,7 @@ public class RestaurantControllerTest {
         .fromPath(ADD_REMOVE_CART_API_URI)
         .build().toUri();
 
-    assertEquals("/qeats/v1/cart/item", uri.toString());
+    assertEquals("/blazemart/v1/cart/item", uri.toString());
 
     String removeCartItemBody = loadJsonBody("cart_add_or_remove_item_body.json");
 
@@ -499,7 +499,7 @@ public class RestaurantControllerTest {
   //        .fromPath(CLEAR_CART_API_URI)
   //        .build().toUri();
   //
-  //    assertEquals("/qeats/v1/cart/clear", uri.toString());
+  //    assertEquals("/blazemart/v1/cart/clear", uri.toString());
   //
   //    String removeCartItemBody = loadJsonBody("post_order_or_clear_cart_body.json");
   //
@@ -525,7 +525,7 @@ public class RestaurantControllerTest {
         .fromPath(POST_ORDER_API_URI)
         .build().toUri();
 
-    assertEquals("/qeats/v1/order", uri.toString());
+    assertEquals("/blazemart/v1/order", uri.toString());
 
     String postCartItemBody = loadJsonBody("post_order_or_clear_cart_body.json");
 
@@ -553,7 +553,7 @@ public class RestaurantControllerTest {
   //        .queryParam("userId", "Bunny")
   //        .build().toUri();
   //
-  //    assertEquals("/qeats/v1/orders?userId=Bunny", uri.toString());
+  //    assertEquals("/blazemart/v1/orders?userId=Bunny", uri.toString());
   //
   //    MockHttpServletResponse response = mvc.perform(
   //        get(uri.toString()).accept(APPLICATION_JSON_UTF8)

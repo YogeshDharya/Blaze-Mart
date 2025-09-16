@@ -1,6 +1,6 @@
 package com.exceptions;
 
-public class ItemNotFromSameRestaurantException extends QEatsException {
+public class ItemNotFromSameRestaurantException extends blazemartException {
 
   public ItemNotFromSameRestaurantException() {
   }

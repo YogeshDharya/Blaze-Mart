@@ -1,12 +1,6 @@
-/*
- *
- *  * Copyright (c) Crio.Do 2019. All rights reserved
- *
- */
+package com.repositories;
 
-package com.crio.blazemart.repositories;
-
-import com.crio.blazemart.models.RestaurantEntity;
+import com.models.RestaurantEntity;
 import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;

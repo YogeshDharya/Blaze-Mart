@@ -1,6 +1,6 @@
 package com.dto;
 
-import com.crio.blazemart.models.RestaurantEntity;
+import com.models.RestaurantEntity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

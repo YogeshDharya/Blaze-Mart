@@ -1,6 +1,6 @@
 package com.exceptions;
 
-public class CartNotFoundException extends blazemartException {
+public class CartNotFoundException extends BlazeMartException {
 
   @Override
   public int getErrorType() {

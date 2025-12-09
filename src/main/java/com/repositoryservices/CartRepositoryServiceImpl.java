@@ -6,7 +6,7 @@ import com.exceptions.CartNotFoundException;
 import com.models.CartEntity;
 import com.repositories.CartRepository;
 import java.util.Optional;
-import javax.inject.Provider;
+import org.springframework.beans.factory.ObjectProvider;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,18 +18,18 @@ public class CartRepositoryServiceImpl implements CartRepositoryService {
   private CartRepository cartRepository;
 
   @Autowired
-  private Provider<ModelMapper> modelMapperProvider;
+  private ObjectProvider<ModelMapper> modelMapperProvider;
 
   @Override
   public String createCart(Cart cart) {
-    ModelMapper mapper = modelMapperProvider.get();
+    ModelMapper mapper = modelMapperProvider.getObject();
     CartEntity cartEntity = cartRepository.save(mapper.map(cart, CartEntity.class));
     return cartEntity.getId();
   }
 
   @Override
   public Optional<Cart> findCartByUserId(String userId) {
-    ModelMapper mapper = modelMapperProvider.get();
+    ModelMapper mapper = modelMapperProvider.getObject();
 
     Optional<CartEntity> cartByUserId = cartRepository.findCartByUserId(userId);
 
@@ -43,7 +43,7 @@ public class CartRepositoryServiceImpl implements CartRepositoryService {
 
   @Override
   public Cart findCartByCartId(String cartId) throws CartNotFoundException {
-    ModelMapper mapper = modelMapperProvider.get();
+    ModelMapper mapper = modelMapperProvider.getObject();
 
     Optional<CartEntity> cartById = cartRepository.findCartById(cartId);
 
@@ -55,7 +55,7 @@ public class CartRepositoryServiceImpl implements CartRepositoryService {
 
   @Override
   public Cart addItem(Item item, String cartId, String restaurantId) throws CartNotFoundException {
-    ModelMapper mapper = modelMapperProvider.get();
+    ModelMapper mapper = modelMapperProvider.getObject();
     Optional<CartEntity> cartById = cartRepository.findCartById(cartId);
 
     if (cartById.isPresent()) {
@@ -71,7 +71,7 @@ public class CartRepositoryServiceImpl implements CartRepositoryService {
   @Override
   public Cart removeItem(Item item, String cartId, String restaurantId)
       throws CartNotFoundException {
-    ModelMapper mapper = modelMapperProvider.get();
+    ModelMapper mapper = modelMapperProvider.getObject();
     Optional<CartEntity> cartById = cartRepository.findCartById(cartId);
 
     if (cartById.isPresent()) {

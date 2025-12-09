@@ -1,7 +1,7 @@
 package com.config;
 
-import static com.crio.blazemart.globals.GlobalConstants.REDIS_HOST;
-import static com.crio.blazemart.globals.GlobalConstants.REDIS_PORT;
+import static com.globals.GlobalConstants.REDIS_HOST;
+import static com.globals.GlobalConstants.REDIS_PORT;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

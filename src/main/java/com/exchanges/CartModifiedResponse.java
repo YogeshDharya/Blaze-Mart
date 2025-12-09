@@ -1,6 +1,6 @@
 package com.exchanges;
 
-import com.crio.blazemart.dto.Cart;
+import com.dto.Cart;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

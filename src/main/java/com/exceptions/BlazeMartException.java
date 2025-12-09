@@ -1,6 +1,6 @@
 package com.exceptions;
 
-public abstract class BlazeMart extends RuntimeException {
+public abstract class BlazeMartException extends RuntimeException {
 
   public static final int ITEM_NOT_FOUND_IN_RESTAURANT_MENU = 101;
   static final int ITEM_NOT_FROM_SAME_RESTAURANT = 102;
@@ -8,10 +8,10 @@ public abstract class BlazeMart extends RuntimeException {
   static final int CART_NOT_FOUND = 103;
   static final int USER_NOT_FOUND = 104;
 
-  blazemartException() {
+  BlazeMartException() {
   }
 
-  blazemartException(String message) {
+  BlazeMartException(String message) {
     super(message);
   }
 

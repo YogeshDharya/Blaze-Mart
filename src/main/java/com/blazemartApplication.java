@@ -1,4 +1,4 @@
-package com.crio.blazemart;
+package com;
 
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;

@@ -1,5 +1,4 @@
-package com.crio.blazemart.exchanges;
-
+package com.exchanges;
 
 public class GetOrdersRequest {
 }

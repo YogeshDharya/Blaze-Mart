@@ -1,9 +1,9 @@
-package com.crio.blazemart.utils;
+package com.utils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Utility class to hold latitude and longitude.

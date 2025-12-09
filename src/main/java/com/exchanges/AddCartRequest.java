@@ -1,4 +1,4 @@
-package comexchanges;
+package com.exchanges;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

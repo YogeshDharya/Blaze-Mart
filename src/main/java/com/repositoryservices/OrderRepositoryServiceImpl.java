@@ -7,7 +7,7 @@ import com.models.OrderEntity;
 import com.repositories.CartRepository;
 import com.repositories.OrderRepository;
 import java.time.LocalTime;
-import javax.inject.Provider;
+import org.springframework.beans.factory.ObjectProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class OrderRepositoryServiceImpl implements OrderRepositoryService {
 
   @Autowired
-  private Provider<ModelMapper> modelMapperProvider;
+  private ObjectProvider<ModelMapper> modelMapperProvider;
 
   @Autowired
   private OrderRepository orderRepository;
@@ -28,7 +28,7 @@ public class OrderRepositoryServiceImpl implements OrderRepositoryService {
 
   @Override
   public Order placeOrder(Cart cart) {
-    final ModelMapper mapper = modelMapperProvider.get();
+    final ModelMapper mapper = modelMapperProvider.getObject();
     OrderEntity orderEntity = new OrderEntity();
     orderEntity.setRestaurantId(cart.getRestaurantId());
     orderEntity.setUserId(cart.getUserId());

@@ -1,19 +1,13 @@
-/*
- *
- *  * Copyright (c) Crio.Do 2019. All rights reserved
- *
- */
+package com.controller;
 
-package com.crio.blazemart.controller;
-
-import static com.crio.blazemart.controller.RestaurantController.CART_API;
-import static com.crio.blazemart.controller.RestaurantController.CART_CLEAR_API;
-import static com.crio.blazemart.controller.RestaurantController.CART_ITEM_API;
-import static com.crio.blazemart.controller.RestaurantController.GET_ORDERS_API;
-import static com.crio.blazemart.controller.RestaurantController.MENU_API;
-import static com.crio.blazemart.controller.RestaurantController.POST_ORDER_API;
-import static com.crio.blazemart.controller.RestaurantController.RESTAURANTS_API;
-import static com.crio.blazemart.controller.RestaurantController.RESTAURANT_API_ENDPOINT;
+import static com.controller.RestaurantController.CART_API;
+import static com.controller.RestaurantController.CART_CLEAR_API;
+import static com.controller.RestaurantController.CART_ITEM_API;
+import static com.controller.RestaurantController.GET_ORDERS_API;
+import static com.controller.RestaurantController.MENU_API;
+import static com.controller.RestaurantController.POST_ORDER_API;
+import static com.controller.RestaurantController.RESTAURANTS_API;
+import static com.controller.RestaurantController.RESTAURANT_API_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;

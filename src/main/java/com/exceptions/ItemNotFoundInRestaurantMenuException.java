@@ -1,6 +1,6 @@
 package com.exceptions;
 
-public class ItemNotFoundInRestaurantMenuException extends blazemartException {
+public class ItemNotFoundInRestaurantMenuException extends BlazeMartException {
 
   public ItemNotFoundInRestaurantMenuException(String message) {
     super(message);

@@ -6,7 +6,7 @@ import com.repositories.MenuRepository;
 
 import java.util.Optional;
 
-import javax.inject.Provider;
+import org.springframework.beans.factory.ObjectProvider;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +18,10 @@ public class MenuRepositoryServiceImpl implements MenuRepositoryService {
   private MenuRepository menuRepository;
 
   @Autowired
-  private Provider<ModelMapper> modelMapperProvider;
+  private ObjectProvider<ModelMapper> modelMapperProvider;
 
   public Menu findMenu(String restaurantId) {
-    ModelMapper modelMapper = modelMapperProvider.get();
+    ModelMapper modelMapper = modelMapperProvider.getObject();
 
     Optional<MenuEntity> menuById = menuRepository.findMenuByRestaurantId(restaurantId);
 

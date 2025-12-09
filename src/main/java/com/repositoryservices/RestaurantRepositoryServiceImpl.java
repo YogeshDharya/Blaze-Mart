@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Provider;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.ObjectProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
   private MongoTemplate mongoTemplate;
 
   @Autowired
-  private Provider<ModelMapper> modelMapperProvider;
+  private ObjectProvider<ModelMapper> modelMapperProvider;
 
   @PostConstruct
   private void init() {
@@ -83,7 +83,7 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
     for (RestaurantEntity restaurantEntity : restaurantEntities) {
       if (isRestaurantCloseByAndOpen(restaurantEntity, currentTime, latitude, longitude,
           servingRadiusInKms)) {
-        restaurants.add(modelMapperProvider.get().map(restaurantEntity, Restaurant.class));
+        restaurants.add(modelMapperProvider.getObject().map(restaurantEntity, Restaurant.class));
       }
     }
     return restaurants;
@@ -137,7 +137,7 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
     restaurantEntityLinkedHashSet.forEach(restaurantEntity -> {
       if (isRestaurantCloseByAndOpen(restaurantEntity, currentTime, latitude, longitude,
           servingRadiusInKms)) {
-        restaurants.add(modelMapperProvider.get().map(restaurantEntity, Restaurant.class));
+        restaurants.add(modelMapperProvider.getObject().map(restaurantEntity, Restaurant.class));
       }
     });
     return restaurants;
@@ -200,7 +200,7 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
     restaurantEntities.forEach(restaurantEntity -> {
       if (isRestaurantCloseByAndOpen(restaurantEntity, currentTime, latitude, longitude,
           servingRadiusInKms)) {
-        restaurants.add(modelMapperProvider.get().map(restaurantEntity, Restaurant.class));
+        restaurants.add(modelMapperProvider.getObject().map(restaurantEntity, Restaurant.class));
       }
     });
     return restaurants;

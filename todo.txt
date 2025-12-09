@@ -1,0 +1,42 @@
+parent-https://github.com/mannan7/QEats
+Dependency management — pulling libraries and frameworks from Maven Central.
+
+Packaging the Spring Boot application into an executable JAR.
+
+Running the app locally with gradlew bootRun.
+
+Testing using JUnit (and possibly Mockito).
+
+Building backend code (it’s a Java/Spring Boot project).
+
+plugins
+    id 'java'
+    id 'org.springframework.boot' version '3.2.2'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+installed dependencies 
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+
+
+As of 23rd September 2025
+    either .py or otherwise remove automation with python in resume  
+    recently added 
+    Provisioned VPC, EC2 with Helm using AWS &Helm Terraform providers, reducing provisioning time by 40%,maintaining consistent infrastructure across environments
+    so will have to include an entire terraform init ecosystem
+    Why do we even have a BlazeMartException and no Global Exception Handler ?
+    What are the checked and un-checked exceptions of this project 
+    What could the scope of using streams and how did we handle exceptions in them ? Functional Interface ? Or may be io.vavr.control.Try;
+    had added *.log in .gitignore file lets see if it works once I am done with  

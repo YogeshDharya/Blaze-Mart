@@ -20,6 +20,7 @@ com\services\CartAndOrderServiceImpl.class
 com\exchanges\GetOrdersRequest.class
 com\exchanges\GetMenuResponse.class
 com\utils\GeoUtils.class
+com\BlazeMartApplication.class
 com\services\MenuService.class
 com\controller\RestaurantController.class
 com\repositoryservices\RestaurantRepositoryServiceDummyImpl$1.class
@@ -47,7 +48,6 @@ com\exchanges\GetCartRequest.class
 com\exceptions\ItemNotFoundInRestaurantMenuException.class
 com\config\OpenApiConfig.class
 com\repositories\OrderRepository.class
-com\blazemartApplication.class
 com\exchanges\GetRestaurantsRequest.class
 com\repositoryservices\OrderRepositoryServiceImpl.class
 com\utils\FixtureHelpers.class

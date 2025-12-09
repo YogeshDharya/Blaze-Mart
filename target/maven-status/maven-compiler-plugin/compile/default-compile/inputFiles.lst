@@ -2,7 +2,7 @@ D:\myWerf\MyDev\blaze_mart\Blaze-Mart\src\main\java\com\exchanges\GetRestaurants
 D:\myWerf\MyDev\blaze_mart\Blaze-Mart\src\main\java\com\services\RestaurantServiceImpl.java
 D:\myWerf\MyDev\blaze_mart\Blaze-Mart\src\main\java\com\exchanges\GetCartRequest.java
 D:\myWerf\MyDev\blaze_mart\Blaze-Mart\src\main\java\com\repositories\OrderRepository.java
-D:\myWerf\MyDev\blaze_mart\Blaze-Mart\src\main\java\com\blazemartApplication.java
+D:\myWerf\MyDev\blaze_mart\Blaze-Mart\src\main\java\com\BlazeMartApplication.java
 D:\myWerf\MyDev\blaze_mart\Blaze-Mart\src\main\java\com\models\OrderMessage.java
 D:\myWerf\MyDev\blaze_mart\Blaze-Mart\src\main\java\com\exceptions\CartNotFoundException.java
 D:\myWerf\MyDev\blaze_mart\Blaze-Mart\src\main\java\com\services\MenuServiceImpl.java

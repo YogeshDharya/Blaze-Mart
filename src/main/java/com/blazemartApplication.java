@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Scope;
 
 @SpringBootApplication
 @Log4j2
-public class blazemartApplication {
+public class BlazeMartApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(blazemartApplication.class, args);
+    SpringApplication.run(BlazeMartApplication.class, args);
     log.info("Congrats! Your blazemartApplication server has started");
   }
 
